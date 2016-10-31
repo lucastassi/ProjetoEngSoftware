@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FornecedorDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;DistDeBebidas_Software&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">my.contacteditor</a> &gt; <span class="el_source">FornecedorDAO.java</span></div><h1>FornecedorDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package my.contacteditor;
+
+import my.contacteditor.conexao.conexaoBD;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author  Lucas Tassi
+ *          Lucas Diniz
+ *          Lucas Barbosa
+ *          Jhordan Garcia
+ */
+public class FornecedorDAO {
+    
+    private String cnpj;
+    private String razao;
+    private String inscEstadual;
+    private String telefone1;
+    private String telefone2;
+    private String nome;
+    private String rua;
+    private String bairro;
+    private String num;
+    private String cep;
+    private String cidade;
+    private String estado;
+    
+<span class="fc" id="L34">    public FornecedorDAO(String cnpj, String inscEstadual, String FNome, String razao, String FRua, String FBairro, String FCep, String FEndNum,String FCidade,String FEstado,String FTel1, String FTel2) {</span>
+<span class="fc" id="L35">        this.cnpj = cnpj;</span>
+<span class="fc" id="L36">        this.telefone1 = FTel1;</span>
+<span class="fc" id="L37">        this.telefone2 = FTel2;</span>
+<span class="fc" id="L38">        this.nome = FNome;</span>
+<span class="fc" id="L39">        this.rua = FRua;</span>
+<span class="fc" id="L40">        this.bairro = FBairro;</span>
+<span class="fc" id="L41">        this.num = FEndNum;</span>
+<span class="fc" id="L42">        this.cep = FCep;</span>
+<span class="fc" id="L43">        this.inscEstadual = inscEstadual;</span>
+<span class="fc" id="L44">        this.razao = razao;</span>
+<span class="fc" id="L45">        this.estado = FEstado;</span>
+<span class="fc" id="L46">        this.cidade = FCidade;</span>
+<span class="fc" id="L47">    }</span>
+    
+
+    public String getFEstado() {
+<span class="fc" id="L51">        return estado;</span>
+    }
+
+    public void setFEstado(String FEstado) {
+<span class="fc" id="L55">        this.estado = FEstado;</span>
+<span class="fc" id="L56">    }</span>
+    
+    public String getFCidade() {
+<span class="fc" id="L59">        return cidade;</span>
+    }
+
+    public void setFCidade(String FCidade) {
+<span class="fc" id="L63">        this.cidade = FCidade;</span>
+<span class="fc" id="L64">    }</span>
+    
+    public String getInscEstadual() {
+<span class="fc" id="L67">        return inscEstadual;</span>
+    }
+
+    public void setInscEstadual(String inscEstadual) {
+<span class="fc" id="L71">        this.inscEstadual = inscEstadual;</span>
+<span class="fc" id="L72">    }</span>
+    
+    public String getRazao() {
+<span class="fc" id="L75">        return razao;</span>
+    }
+
+    public void setRazao(String razao) {
+<span class="fc" id="L79">        this.razao = razao;</span>
+<span class="fc" id="L80">    }</span>
+    
+    public String getCnpj() {
+<span class="fc" id="L83">        return cnpj;</span>
+    }
+
+    public void setCnpj(String cnpj) {
+<span class="fc" id="L87">        this.cnpj = cnpj;</span>
+<span class="fc" id="L88">    }</span>
+
+    public String getTelefone1() {
+<span class="fc" id="L91">        return telefone1;</span>
+    }
+
+    public void setTelefone1(String telefone1) {
+<span class="fc" id="L95">        this.telefone1 = telefone1;</span>
+<span class="fc" id="L96">    }</span>
+
+    public String getTelefone2() {
+<span class="fc" id="L99">        return telefone2;</span>
+    }
+
+    public void setTelefone2(String telefone2) {
+<span class="fc" id="L103">        this.telefone2 = telefone2;</span>
+<span class="fc" id="L104">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L107">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L111">        this.nome = nome;</span>
+<span class="fc" id="L112">    }</span>
+
+    public String getRua() {
+<span class="fc" id="L115">        return rua;</span>
+    }
+
+    public void setRua(String rua) {
+<span class="fc" id="L119">        this.rua = rua;</span>
+<span class="fc" id="L120">    }</span>
+
+    public String getBairro() {
+<span class="fc" id="L123">        return bairro;</span>
+    }
+
+    public void setBairro(String bairro) {
+<span class="fc" id="L127">        this.bairro = bairro;</span>
+<span class="fc" id="L128">    }</span>
+
+    public String getNum() {
+<span class="fc" id="L131">        return num;</span>
+    }
+
+    public void setNum(String num) {
+<span class="fc" id="L135">        this.num = num;</span>
+<span class="fc" id="L136">    }</span>
+
+    public String getCep() {
+<span class="fc" id="L139">        return cep;</span>
+    }
+
+    public void setCep(String cep) {
+<span class="fc" id="L143">        this.cep = cep;</span>
+<span class="fc" id="L144">    }</span>
+    
+<span class="fc" id="L146">    public FornecedorDAO(){</span>
+        /*Utilizado nos testes (Classe PigLatinTest)*/
+<span class="fc" id="L148">    }</span>
+    
+    
+    
+    /*Utilizado nos testes (retorna true/false para realizar as comparações)*/
+    public boolean insereFornecedor() throws entradaInvalidaException, SQLException{
+<span class="fc" id="L154">        validaEntrada ve = new validaEntrada();</span>
+<span class="fc" id="L155">        conexaoBD conexao = new conexaoBD();</span>
+         
+        try{
+<span class="fc" id="L158">            ve.valida_entrada(cnpj, inscEstadual, nome, razao, rua, bairro, cep, num, cidade, estado, telefone1,telefone2);</span>
+<span class="fc" id="L159">            conexao.insereDados(this);</span>
+<span class="fc" id="L160">            return true;</span>
+        }
+<span class="fc" id="L162">        catch(Exception ex){</span>
+<span class="fc" id="L163">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+    }
+    
+    /*Utilizado nos testes (retorna true/false para realizar as comparações)*/
+    public boolean atualizaFornecedor() throws entradaInvalidaException {
+<span class="fc" id="L169">        validaEntrada ve = new validaEntrada();</span>
+<span class="fc" id="L170">        conexaoBD conexao = new conexaoBD();</span>
+        
+        try{
+<span class="fc" id="L173">            ve.valida_entrada(cnpj, inscEstadual, nome, razao, rua, bairro, cep, num, cidade, estado, telefone1,telefone2 );</span>
+<span class="fc" id="L174">            conexao.atualizarForn(this);</span>
+<span class="fc" id="L175">            return true;</span>
+        }
+<span class="nc" id="L177">        catch(Exception ex){</span>
+<span class="nc" id="L178">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+       
+    }
+
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

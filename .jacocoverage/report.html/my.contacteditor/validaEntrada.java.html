@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>validaEntrada.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;DistDeBebidas_Software&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">my.contacteditor</a> &gt; <span class="el_source">validaEntrada.java</span></div><h1>validaEntrada.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package my.contacteditor;
+
+/**
+ *
+ * @author lucas
+ */
+<span class="fc" id="L12">public class validaEntrada {</span>
+    
+    public void valida_entrada(String cnpj, String inscEstadual, String FNome, String razao, String FRua, String FBairro, String FCep, String FEndNum,String FCidade,String FEstado,String FTel1, String FTel2) throws entradaInvalidaException{
+<span class="fc" id="L15">        validaCNPJ(cnpj);</span>
+<span class="fc" id="L16">        validaInscEst(inscEstadual);</span>
+<span class="fc" id="L17">        validaNomeFantasia(FNome);</span>
+<span class="fc" id="L18">        validaRazaoSocial(razao);</span>
+<span class="fc" id="L19">        validaRua(FRua);</span>
+<span class="fc" id="L20">        validaBairro(FBairro);</span>
+<span class="fc" id="L21">        validaCep(FCep);</span>
+<span class="fc" id="L22">        validaNumRua(FEndNum);</span>
+<span class="fc" id="L23">        validaCidade(FCidade);</span>
+<span class="fc" id="L24">        validaTelefone(FTel1);</span>
+<span class="fc" id="L25">        validaTelefone(FTel2);</span>
+        
+<span class="fc" id="L27">    }</span>
+    
+    public boolean validaCNPJ(String cnpj) throws entradaInvalidaException{
+    
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if(cnpj.matches(&quot;[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\\/[0-9]{4}\\-[0-9]{2}&quot;)){</span>
+<span class="fc" id="L32">            return true;</span>
+        }else{
+<span class="fc" id="L34">            throw new entradaInvalidaException(&quot;CNPJ Inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaNomeFantasia(String nf) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if(nf.matches(&quot;[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*&quot;)){</span>
+<span class="fc" id="L41">            return true;</span>
+        }else{
+<span class="fc" id="L43">            throw new entradaInvalidaException(&quot;Nome Fantasia inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaRazaoSocial(String rs) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if(rs.matches(&quot;[a-zA-záéíóú\\-\\.\\/]{2,}(\\s[a-zA-záéíóú\\-\\.\\/]{2,})*&quot;)){</span>
+<span class="fc" id="L50">            return true;</span>
+        }else{
+<span class="fc" id="L52">            throw new entradaInvalidaException(&quot;Razão social inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaInscEst(String ie) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if(ie.matches(&quot;[0-9]{9,14}&quot;)){</span>
+<span class="fc" id="L59">            return true;</span>
+        }else{
+<span class="fc" id="L61">            throw new entradaInvalidaException(&quot;Inscrição Estadual inválida (digite somente números)&quot;);</span>
+        }
+    }
+    
+    public boolean validaRua(String rua) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z0-9áéíóú]{2,}\\.?(\\s[a-zA-z0-9áéíóú]+)*&quot;)){</span>
+<span class="fc" id="L68">            return true;</span>
+        }else{
+<span class="fc" id="L70">            throw new entradaInvalidaException(&quot;Rua inválida&quot;);</span>
+        }
+    }
+    
+    public boolean validaNumRua(String nRua) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if(nRua.matches(&quot;([a-zA-Z]{1})?[0-9]{1,4}([a-zA-Z]{1})?&quot;)){ //Pode ser somente número ou A1111 ou 1111B por exemplo.</span>
+<span class="fc" id="L77">            return true;</span>
+        }else{
+<span class="fc" id="L79">            throw new entradaInvalidaException(&quot;Número do endereço inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaBairro(String rua) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z]{2,}\\.?(\\s[a-zA-z]{2,})*&quot;)){</span>
+<span class="fc" id="L86">            return true;</span>
+        }else{
+<span class="fc" id="L88">            throw new entradaInvalidaException(&quot;Bairro inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaCep(String cep) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if(cep.matches(&quot;[0-9]{5}\\-[0-9]{3}&quot;)){</span>
+<span class="fc" id="L95">            return true;</span>
+        }else{
+<span class="fc" id="L97">            throw new entradaInvalidaException(&quot;CEP inválido!&quot;);</span>
+        }
+    }
+    
+    public boolean validaCidade(String cid) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if(cid.matches(&quot;[a-zA-záéíóúãõ]{2,}(\\s[a-zA-záéíóúãõ]{2,})*&quot;)){</span>
+<span class="fc" id="L104">            return true;</span>
+        }else{
+<span class="fc" id="L106">            throw new entradaInvalidaException(&quot;Cidade inválida!&quot;);</span>
+        }
+    }
+    
+    public boolean validaTelefone(String tel) throws entradaInvalidaException{
+        
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if(tel.matches(&quot;\\([1-9]{2}\\)[0-9]{4}\\-[0-9]{4}&quot;)){</span>
+<span class="fc" id="L113">            return true;</span>
+        }else{
+<span class="fc" id="L115">            throw new entradaInvalidaException(&quot;Telefone inválido!&quot;);</span>
+        }
+    }
+    
+    /*
+    public boolean validaEstado(String est) throws entradaInvalidaException{
+        
+        if(est.matches(&quot;[RS]|[SC]|[PR]|[SP]|[MG]|[RJ]|[ES]|[BA]|[SE]|[AL]|[PE]|&quot;
+                + &quot;[PB]|[RN]|[PI]|[MA]|[CE]|[GO]|[TO]|[MT]|[MS]|[DF]|[AM]|[AC]|&quot;
+                + &quot;[PA]|[RO]|[RR]|[AP]&quot;)){
+            return true;
+        }else{
+            throw new entradaInvalidaException(&quot;Verifique o Estado!&quot;);
+        }
+    }    
+    */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
