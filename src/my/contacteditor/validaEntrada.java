@@ -26,6 +26,68 @@ public class validaEntrada {
         
     }
     
+    public void valida_entrada_produto(int codigo, String codBarras, String nome, String descricao, String DescricaoReduzida, String fabricante, String outros, String categoria, String localEstoque, String UnVenda, int estoqueInicial, float custo, float tributos, 
+                                        String dataFab, String dataVal, String obs)throws entradaInvalidaException{
+    
+        validaCodigo(codigo);
+        validaNome(nome);
+        validaNome(descricao);
+        validaNome(DescricaoReduzida);
+        validaEstoque(estoqueInicial);
+        validaCustoETributos(custo);
+        validaCustoETributos(tributos);
+        validaDatas(dataFab);
+        validaDatas(dataVal);
+        
+    }
+   
+    public boolean validaCodigo(int codigo) throws entradaInvalidaException{
+        
+        if(Integer.toString(codigo).matches("[0-9]{1,}"))
+            return true;
+        else{
+            throw new entradaInvalidaException("Código inválido!\n - Somente números");
+        }
+    }
+    
+    public boolean validaNome(String nome)throws entradaInvalidaException{
+                
+        if(nome.matches("[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*")){
+            return true;
+        }else{
+            throw new entradaInvalidaException("Nome inválido!");
+        }
+    }
+    
+    public boolean validaEstoque(int estoque)throws entradaInvalidaException{
+                
+        if(Integer.toString(estoque).matches("[0-9]{1,}")){
+            return true;
+        }else{
+            throw new entradaInvalidaException("Estoque inicial inválido! \n - Somente números inteiros");
+        }
+    }
+    
+     public boolean validaCustoETributos(float estoque)throws entradaInvalidaException{
+                
+        if(Float.toString(estoque).matches("[0-9]{1,}\\.[0-9]{1,}")){
+            return true;
+        }else{
+            throw new entradaInvalidaException("Custo inválido! \n - Digite números sem pontos (exceto vírgula)");
+        }
+    }
+     
+     public boolean validaDatas(String data)throws entradaInvalidaException{
+                
+        if(data.matches("[0,9]{2}\\[0,9]{2}\\[0,9]{4}")){
+            return true;
+        }else{
+            throw new entradaInvalidaException("Data inválida!");
+        }
+    } 
+    
+    
+  
     public boolean validaCNPJ(String cnpj) throws entradaInvalidaException{
     
         if(cnpj.matches("[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\\/[0-9]{4}\\-[0-9]{2}")){
@@ -34,6 +96,7 @@ public class validaEntrada {
             throw new entradaInvalidaException("CNPJ Inválido!");
         }
     }
+    
     
     public boolean validaNomeFantasia(String nf) throws entradaInvalidaException{
         

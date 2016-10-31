@@ -184,10 +184,15 @@ public class ProdutoDAO {
     
     public ProdutoDAO(){}
     
+    
+    
         public boolean insereProduto() throws entradaInvalidaException, SQLException{
+        validaEntrada va = new validaEntrada();
         conexaoBD conexao = new conexaoBD();
          
         try{
+            //va.valida_entrada_produto(codigo, codBarras, nome, descricao, descricaoReduzida, fabricante, outros, categoria, localEstoque, unCompra, estoqueInicial,
+                    //custo,tributos, dataFab, dataVal, observacoes);
             conexao.inserirDadosProduto(this);
             return true;
         }

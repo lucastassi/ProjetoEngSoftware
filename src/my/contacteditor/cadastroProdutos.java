@@ -371,7 +371,7 @@ public class cadastroProdutos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ConsultaProdutos cp = new ConsultaProdutos();
-        
+
         int codigo = Integer.parseInt(PCodigo.getText());
         String nome = Pnome.getText();
         String codBarras = PCodBarras.getText();
