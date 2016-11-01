@@ -26,16 +26,16 @@ public class validaEntrada {
         
     }
     
-    public void valida_entrada_produto(int codigo, String codBarras, String nome, String descricao, String DescricaoReduzida, String fabricante, String outros, String categoria, String localEstoque, String UnVenda, int estoqueInicial, float custo, float tributos, 
-                                        String dataFab, String dataVal, String obs)throws entradaInvalidaException{
+    public void valida_entrada_produto(int codigo, String nome, String descricao, String DescricaoReduzida, int estoqueInicial, float custo, float tributos, 
+                                        String dataFab, String dataVal) throws entradaInvalidaException{
     
         validaCodigo(codigo);
         validaNome(nome);
         validaNome(descricao);
         validaNome(DescricaoReduzida);
         validaEstoque(estoqueInicial);
-        validaCustoETributos(custo);
-        validaCustoETributos(tributos);
+        validaCusto(custo);
+        validaTributos(tributos);
         validaDatas(dataFab);
         validaDatas(dataVal);
         
@@ -55,7 +55,7 @@ public class validaEntrada {
         if(nome.matches("[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*")){
             return true;
         }else{
-            throw new entradaInvalidaException("Nome inválido!");
+            throw new entradaInvalidaException("Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida");
         }
     }
     
@@ -68,18 +68,27 @@ public class validaEntrada {
         }
     }
     
-     public boolean validaCustoETributos(float estoque)throws entradaInvalidaException{
+     public boolean validaCusto(float custo)throws entradaInvalidaException{
                 
-        if(Float.toString(estoque).matches("[0-9]{1,}\\.[0-9]{1,}")){
+        if(Float.toString(custo).replace(".", ",").matches("^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$")){
             return true;
         }else{
-            throw new entradaInvalidaException("Custo inválido! \n - Digite números sem pontos (exceto vírgula)");
+            throw new entradaInvalidaException("Custo inválido! \n - Digite ',' para separar os centavos!");
+        }
+    }
+     
+          public boolean validaTributos(float estoque)throws entradaInvalidaException{
+                
+        if(Float.toString(estoque).replace(".", ",").matches("^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$")){
+            return true;
+        }else{
+            throw new entradaInvalidaException("Tributo inválido! \n - Digite com '.' ou ','!");
         }
     }
      
      public boolean validaDatas(String data)throws entradaInvalidaException{
                 
-        if(data.matches("[0,9]{2}\\[0,9]{2}\\[0,9]{4}")){
+        if(data.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")){
             return true;
         }else{
             throw new entradaInvalidaException("Data inválida!");

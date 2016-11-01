@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import my.contacteditor.ClienteDAO;
 import my.contacteditor.FornecedorDAO;
+import my.contacteditor.ProdutoDAO;
 import my.contacteditor.conexao.conexaoBD;
 import my.contacteditor.validaEntrada;
 import org.junit.After;
@@ -723,7 +724,7 @@ public class PigLatinTest {
     
     
     
-      @Test
+    @Test
     public void testeInsercaoClienteOk() throws SQLException, Exception{
      
      String cnpj=("00.000.000/0000-00");
@@ -990,4 +991,336 @@ public class PigLatinTest {
      assertEquals(true, conexao.excluirCliente(cnpj));
     }//Teste para verificar se a deleção funciona
     
+     /*----------------------------------------------------------------------------------------------------------------
+                                                     TESTE PARA PRODUTOS (LUCAS TASSI)
+   ---------------------------------------------------------------------------------------------------------------- */
+    
+    @Test
+    public void testeInsercaoProdutoOk() throws SQLException, Exception{
+     
+     int codigo = 1234;
+     String nome=("Coca Cola");
+     String descricao = ("descricao");
+     String descricaoReduzida = ("DescReduzida");
+     String codigoBarras =("12312123");
+     String PLocalEstoque = ("");
+     String fabricante = ("Fabricante");
+     String categoria = ("Refrigerante"); 
+     String dataFabricacao = ("22/22/2222");
+     String dataValidade = ("22/22/2222");
+     String unCompra = ("UN - Unidade");
+     int estoque = 30;
+     float custo = (float) 32.50;
+     float tributos = (float) 33.33;
+     String obs = "REFRIGERANTE COM GÁS";
+     String outros = "";
+     
+     
+    ProdutoDAO p = new ProdutoDAO(codigo, nome, descricao, descricaoReduzida, codigoBarras, PLocalEstoque, fabricante, categoria, dataFabricacao, dataValidade, unCompra, estoque,
+                    custo, tributos, obs, outros);
+     
+     assertTrue(p.insereProduto());
+     }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
+
+    @Test
+    public void testeInsercaoProdutoFalha() throws SQLException, Exception{
+     
+     int codigo = 1234;
+     String nome=("Coca Cola");
+     String descricao = ("descricao");
+     String descricaoReduzida = ("DescReduzida");
+     String codigoBarras =("12312123");
+     String PLocalEstoque = ("");
+     String fabricante = ("Fabricante");
+     String categoria = ("Refrigerante"); 
+     String dataFabricacao = ("2/22/2222");
+     String dataValidade = ("22/22/2222");
+     String unCompra = ("UN - Unidade");
+     int estoque = 30;
+     float custo = (float) 32.50;
+     float tributos = (float) 33.33;
+     String obs = "REFRIGERANTE COM GÁS";
+     String outros = "";
+     
+     
+    ProdutoDAO p = new ProdutoDAO(codigo, nome, descricao, descricaoReduzida, codigoBarras, PLocalEstoque, fabricante, categoria, dataFabricacao, dataValidade, unCompra, estoque,
+                    custo, tributos, obs, outros);
+     
+      try{
+        assertTrue(p.insereProduto());
+      }catch(Exception ex){
+          assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Data inválida!"));
+      }
+     }
+    
+        @Test
+    public void testeInsercaoProdutoFalha2() throws SQLException, Exception{
+     
+     int codigo = 1234;
+     String nome=("Coca Cola");
+     String descricao = ("@$#$");
+     String descricaoReduzida = ("DescReduzida");
+     String codigoBarras =("12312123");
+     String PLocalEstoque = ("");
+     String fabricante = ("Fabricante");
+     String categoria = ("Refrigerante"); 
+     String dataFabricacao = ("22/22/2222");
+     String dataValidade = ("22/22/2222");
+     String unCompra = ("UN - Unidade");
+     int estoque = 30;
+     float custo = (float) 32.50;
+     float tributos = (float) 33.33;
+     String obs = "REFRIGERANTE COM GÁS";
+     String outros = "";
+     
+     
+    ProdutoDAO p = new ProdutoDAO(codigo, nome, descricao, descricaoReduzida, codigoBarras, PLocalEstoque, fabricante, categoria, dataFabricacao, dataValidade, unCompra, estoque,
+                    custo, tributos, obs, outros);
+     
+      try{
+        assertTrue(p.insereProduto());
+      }catch(Exception ex){
+          assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida"));
+      }
+     }
+    
+    @Test
+    public void testeConsultaProduto() throws SQLException, Exception{
+        conexaoBD conexao = new conexaoBD();
+        ProdutoDAO p = new ProdutoDAO();
+        
+        p.setCodigo(1234);
+        p.setNome("Coca Cola");
+        
+        try{
+            assertEquals(p.getNome(), conexao.consultaTodosProdutosPorCodigo2(Integer.toString(p.getCodigo())).getNome());
+        }
+        catch(SQLException ex){
+            System.out.println("Falha ao consultar. Erro: "+ex);
+        }    
+
+    }
+    
+    @Test
+    public void testeAtualizarProduto() throws SQLException, Exception{
+        conexaoBD conexao = new conexaoBD();
+        
+        int codigo = 1234;
+        String nome=("Coca Cola Refrigerante");
+        String descricao = ("descricao");
+        String descricaoReduzida = ("DescReduzida");
+        String codigoBarras =("12312123");
+        String PLocalEstoque = ("");
+        String fabricante = ("Fabricante");
+        String categoria = ("Refrigerante"); 
+        String dataFabricacao = ("22/22/2222");
+        String dataValidade = ("22/22/2222");
+        String unCompra = ("UN - Unidade");
+        int estoque = 30;
+        float custo = (float) 32.50;
+        float tributos = (float) 33.33;
+        String obs = "REFRIGERANTE COM GÁS";
+        String outros = "";
+
+        ProdutoDAO p = new ProdutoDAO(codigo, nome, descricao, descricaoReduzida, codigoBarras, PLocalEstoque, fabricante, categoria, dataFabricacao, dataValidade, unCompra, estoque,
+                    custo, tributos, obs, outros);
+        
+        assertTrue(p.atualizaProduto()); 
+
+    }
+    
+    @Test
+    public void testeAtualizarProdutoFalha2() throws SQLException, Exception{
+     
+     int codigo = 1234;
+     String nome=("Coca Cola");
+     String descricao = ("Ououuu");
+     String descricaoReduzida = ("DescReduzida");
+     String codigoBarras =("12312123");
+     String PLocalEstoque = ("");
+     String fabricante = ("Fabricante");
+     String categoria = ("Refrigerante"); 
+     String dataFabricacao = ("22/22/2222");
+     String dataValidade = ("22/22/2222");
+     String unCompra = ("UN - Unidade");
+     int estoque = 30;
+     float custo = (float) -1;
+     float tributos = (float) 33.33;
+     String obs = "REFRIGERANTE COM GÁS";
+     String outros = "";
+     
+     
+    ProdutoDAO p = new ProdutoDAO(codigo, nome, descricao, descricaoReduzida, codigoBarras, PLocalEstoque, fabricante, categoria, dataFabricacao, dataValidade, unCompra, estoque,
+                    custo, tributos, obs, outros);
+     
+      try{
+        assertTrue(p.atualizaProduto());
+      }catch(Exception ex){
+          assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite ',' para separar os centavos!"));
+      }
+     }
+    
+    @Test
+    public void testaCustoOk() throws Exception{
+       float teste = (float) 2.30;
+        
+        assertTrue(ve.validaCusto(teste));
+    }
+    
+    @Test
+    public void testaCustoFalha() throws Exception{
+       String teste = "a";
+        
+       try{
+        assertFalse(ve.validaCusto(Float.parseFloat(teste)));
+        fail("Era pra ter entrado aqui!");
+       }catch(NumberFormatException ex){
+           assertTrue(ex.getMessage().equalsIgnoreCase("For input string: \"a\""));
+       }
+    }
+    
+    @Test
+    public void testaTributo() throws Exception{
+       float teste = (float) 2.30;
+        
+        assertTrue(ve.validaTributos(teste));
+    }
+    
+    public void testaTributoFalha() throws Exception{
+       String teste = "a";
+        
+       try{
+        assertFalse(ve.validaTributos(Float.parseFloat(teste)));
+        fail("Era pra ter entrado aqui!");
+       }catch(NumberFormatException ex){
+           assertTrue(ex.getMessage().equalsIgnoreCase("For input string: \"a\""));
+       }
+    }
+    
+    @Test
+    public void testaTributoFalha2() throws entradaInvalidaException{
+       float teste = -1;
+        
+       try{
+        assertTrue(ve.validaTributos(teste));
+        fail("Era pra ter entrado na excessão!");
+       }catch(Exception ex){
+           assertTrue(ex.getMessage().equalsIgnoreCase("Tributo inválido! \n - Digite com '.' ou ','!"));
+       }
+    }
+    
+    @Test
+    public void testaCustoFalha2() throws Exception{
+       String teste = "1.9)";
+        
+       try{
+            assertFalse(ve.validaCusto(Float.parseFloat(teste)));
+            fail("Era pra ter entrado aqui!");
+       }catch(NumberFormatException ex){
+          
+       }
+    }
+    
+    @Test
+    public void testaCustoFalha3() throws entradaInvalidaException{
+       float teste = -1;
+        
+       try{
+        assertTrue(ve.validaCusto(teste));
+        fail("Era pra ter entrado na excessão!");
+       }catch(Exception ex){
+           assertTrue(ex.getMessage().equalsIgnoreCase("Custo inválido! \n - Digite ',' para separar os centavos!"));
+       }
+    }
+    
+    @Test
+    public void testaEstoque() throws Exception{
+       int teste = 999;
+        
+        assertTrue(ve.validaEstoque(teste));
+    }
+    
+    @Test
+    public void testaEstoqueFalha() throws entradaInvalidaException{
+       int teste = -1;
+        
+       try{
+        assertTrue(ve.validaEstoque(teste));
+        fail("Era pra ter entrado na excessão!");
+       }catch(Exception ex){
+           assertTrue(ex.getMessage().equalsIgnoreCase("Estoque inicial inválido! \n - Somente números inteiros"));
+       }
+    }
+    
+    @Test
+    public void testaNome() throws Exception{
+       String teste = "Coca Cola Latinha";
+        
+        assertTrue(ve.validaNome(teste));
+    }
+    
+    @Test
+    public void testeNomeFalha() throws entradaInvalidaException{
+        try{
+            assertTrue(ve.validaNome(""));
+            fail("Era pra ter lançado a excessão!");
+        }
+        catch(Exception ex){
+            assertTrue(ex.getMessage().equalsIgnoreCase("Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida"));
+        }
+    }
+    
+    @Test
+    public void testaCodigo() throws entradaInvalidaException{
+        int teste = -123;
+        
+        try{
+            assertTrue(ve.validaCodigo(teste));
+            fail("Era pra ter lançado a excessão!");
+        }
+        catch(Exception ex){
+            assertTrue(ex.getMessage().equalsIgnoreCase("Código inválido!\n - Somente números"));
+        }
+    }
+    
+    @Test
+    public void testaDataOk() throws Exception{
+        String teste = "24/02/1996";
+      
+        assertTrue(ve.validaDatas(teste));     
+    }
+    
+    @Test
+    public void testaDataFalha() throws entradaInvalidaException{
+         String teste = "24/02/199";
+        
+        try{
+            assertTrue(ve.validaDatas(teste));
+            fail("Era pra ter lançado a excessão!");
+        }
+        catch(Exception ex){
+            assertTrue(ex.getMessage().equalsIgnoreCase("Data inválida!"));
+        }
+    }
+    
+    @Test
+    public void testaDataFalha2() throws entradaInvalidaException{
+         String teste = "24/a/1996";
+        
+        try{
+            assertTrue(ve.validaDatas(teste));
+            fail("Era pra ter lançado a excessão!");
+        }
+        catch(Exception ex){
+            assertTrue(ex.getMessage().equalsIgnoreCase("Data inválida!"));
+        }
+    }
+    
+    @Test
+    public void deletaProduto() throws SQLException{
+     int codigo = 1234; 
+       
+     conexaoBD conexao = new conexaoBD();
+     assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
+    }//Teste para verificar se a deleção funciona
 }

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProdutoDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;DistDeBebidas_Software&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">my.contacteditor</a> &gt; <span class="el_source">ProdutoDAO.java</span></div><h1>ProdutoDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package my.contacteditor;
+
+import java.sql.SQLException;
+import my.contacteditor.conexao.conexaoBD;
+
+/**
+ *
+ * @author lucas
+ */
+public class ProdutoDAO {
+    
+    private int codigo;
+    private String nome;
+    private String descricao;
+    private String descricaoReduzida;
+    private String codBarras;
+    private String localEstoque;
+    private String fabricante;
+    private String categoria;
+    private String dataFab;
+    private String dataVal;
+    private String unCompra;
+    private int estoqueInicial;
+    private float custo;
+    private float tributos;
+    private String observacoes;
+    private String outros;
+    
+    public ProdutoDAO(int PCodigo, String PNome, String PDesc, String PDescRed, String PCodBarras, String PLocalEstoque,
+            String PFabricante, String PCat, String PDataFab, String PDataVal, String PUnCompra, int PEstoqueInicial,
+<span class="fc" id="L36">            float PCusto, float PTributos, String PObservacoes, String POutros){</span>
+    
+<span class="fc" id="L38">        this.codigo = PCodigo;</span>
+<span class="fc" id="L39">        this.nome = PNome;</span>
+<span class="fc" id="L40">        this.categoria = PCat;</span>
+<span class="fc" id="L41">        this.codBarras = PCodBarras;</span>
+<span class="fc" id="L42">        this.custo = PCusto;</span>
+<span class="fc" id="L43">        this.dataFab = PDataFab;</span>
+<span class="fc" id="L44">        this.dataVal = PDataVal;</span>
+<span class="fc" id="L45">        this.descricao = PDesc;</span>
+<span class="fc" id="L46">        this.descricaoReduzida = PDescRed;</span>
+<span class="fc" id="L47">        this.estoqueInicial = PEstoqueInicial;</span>
+<span class="fc" id="L48">        this.fabricante = PFabricante;</span>
+<span class="fc" id="L49">        this.localEstoque = PLocalEstoque;</span>
+<span class="fc" id="L50">        this.observacoes = PObservacoes;</span>
+<span class="fc" id="L51">        this.outros = POutros;</span>
+<span class="fc" id="L52">        this.tributos = PTributos;</span>
+<span class="fc" id="L53">        this.unCompra = PUnCompra;</span>
+        
+<span class="fc" id="L55">    }</span>
+
+    public int getCodigo() {
+<span class="fc" id="L58">        return codigo;</span>
+    }
+
+    public void setCodigo(int codigo) {
+<span class="fc" id="L62">        this.codigo = codigo;</span>
+<span class="fc" id="L63">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L66">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L70">        this.nome = nome;</span>
+<span class="fc" id="L71">    }</span>
+
+    public String getDescricao() {
+<span class="fc" id="L74">        return descricao;</span>
+    }
+
+    public void setDescricao(String descricao) {
+<span class="nc" id="L78">        this.descricao = descricao;</span>
+<span class="nc" id="L79">    }</span>
+
+    public String getDescricaoReduzida() {
+<span class="fc" id="L82">        return descricaoReduzida;</span>
+    }
+
+    public void setDescricaoReduzida(String descricaoReduzida) {
+<span class="nc" id="L86">        this.descricaoReduzida = descricaoReduzida;</span>
+<span class="nc" id="L87">    }</span>
+
+    public String getCodBarras() {
+<span class="fc" id="L90">        return codBarras;</span>
+    }
+
+    public void setCodBarras(String codBarras) {
+<span class="nc" id="L94">        this.codBarras = codBarras;</span>
+<span class="nc" id="L95">    }</span>
+
+    public String getLocalEstoque() {
+<span class="fc" id="L98">        return localEstoque;</span>
+    }
+
+    public void setLocalEstoque(String localEstoque) {
+<span class="nc" id="L102">        this.localEstoque = localEstoque;</span>
+<span class="nc" id="L103">    }</span>
+
+    public String getFabricante() {
+<span class="fc" id="L106">        return fabricante;</span>
+    }
+
+    public void setFabricante(String fabricante) {
+<span class="nc" id="L110">        this.fabricante = fabricante;</span>
+<span class="nc" id="L111">    }</span>
+
+    public String getCategoria() {
+<span class="fc" id="L114">        return categoria;</span>
+    }
+
+    public void setCategoria(String categoria) {
+<span class="nc" id="L118">        this.categoria = categoria;</span>
+<span class="nc" id="L119">    }</span>
+
+    public String getDataFab() {
+<span class="fc" id="L122">        return dataFab;</span>
+    }
+
+    public void setDataFab(String dataFab) {
+<span class="nc" id="L126">        this.dataFab = dataFab;</span>
+<span class="nc" id="L127">    }</span>
+
+    public String getDataVal() {
+<span class="fc" id="L130">        return dataVal;</span>
+    }
+
+    public void setDataVal(String dataVal) {
+<span class="nc" id="L134">        this.dataVal = dataVal;</span>
+<span class="nc" id="L135">    }</span>
+
+    public String getUnCompra() {
+<span class="fc" id="L138">        return unCompra;</span>
+    }
+
+    public void setUnCompra(String unCompra) {
+<span class="nc" id="L142">        this.unCompra = unCompra;</span>
+<span class="nc" id="L143">    }</span>
+
+    public int getEstoqueInicial() {
+<span class="fc" id="L146">        return estoqueInicial;</span>
+    }
+
+    public void setEstoqueInicial(int estoqueInicial) {
+<span class="nc" id="L150">        this.estoqueInicial = estoqueInicial;</span>
+<span class="nc" id="L151">    }</span>
+
+    public float getCusto() {
+<span class="fc" id="L154">        return custo;</span>
+    }
+
+    public void setCusto(float custo) {
+<span class="nc" id="L158">        this.custo = custo;</span>
+<span class="nc" id="L159">    }</span>
+
+    public float getTributos() {
+<span class="fc" id="L162">        return tributos;</span>
+    }
+
+    public void setTributos(float tributos) {
+<span class="nc" id="L166">        this.tributos = tributos;</span>
+<span class="nc" id="L167">    }</span>
+
+    public String getObservacoes() {
+<span class="fc" id="L170">        return observacoes;</span>
+    }
+
+    public void setObservacoes(String observacoes) {
+<span class="nc" id="L174">        this.observacoes = observacoes;</span>
+<span class="nc" id="L175">    }</span>
+
+    public String getOutros() {
+<span class="fc" id="L178">        return outros;</span>
+    }
+
+    public void setOutros(String outros) {
+<span class="nc" id="L182">        this.outros = outros;</span>
+<span class="nc" id="L183">    }</span>
+    
+<span class="fc" id="L185">    public ProdutoDAO(){}</span>
+    
+    
+    
+        public boolean insereProduto() throws entradaInvalidaException, SQLException{
+<span class="fc" id="L190">        validaEntrada va = new validaEntrada();</span>
+<span class="fc" id="L191">        conexaoBD conexao = new conexaoBD();</span>
+         
+        try{
+<span class="fc" id="L194">            va.valida_entrada_produto(codigo, nome, descricao, descricaoReduzida, estoqueInicial,</span>
+                    custo,tributos, dataFab, dataVal);
+<span class="fc" id="L196">            conexao.inserirDadosProduto(this);</span>
+<span class="fc" id="L197">            return true;</span>
+        }
+<span class="fc" id="L199">        catch(Exception ex){</span>
+<span class="fc" id="L200">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+    }
+        
+    public boolean atualizaProduto() throws entradaInvalidaException, SQLException {
+<span class="fc" id="L205">        conexaoBD conexao = new conexaoBD();</span>
+<span class="fc" id="L206">        validaEntrada va = new validaEntrada();</span>
+        
+        try{
+<span class="fc" id="L209">            va.valida_entrada_produto(codigo, nome, descricao, descricaoReduzida, estoqueInicial, custo,tributos, dataFab, dataVal);</span>
+            
+<span class="fc" id="L211">            conexao.atualizarProduto(this);</span>
+<span class="fc" id="L212">            return true;</span>
+        }
+<span class="fc" id="L214">        catch(Exception ex){</span>
+<span class="fc" id="L215">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+       
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

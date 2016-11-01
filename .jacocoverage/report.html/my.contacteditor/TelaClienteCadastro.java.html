@@ -463,37 +463,21 @@ public class TelaClienteCadastro extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot; Look and feel setting code (optional) &quot;&gt;
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-<span class="nc bnc" id="L473" title="All 2 branches missed.">            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {</span>
-<span class="nc bnc" id="L474" title="All 2 branches missed.">                if (&quot;Nimbus&quot;.equals(info.getName())) {</span>
-<span class="nc" id="L475">                    javax.swing.UIManager.setLookAndFeel(info.getClassName());</span>
-<span class="nc" id="L476">                    break;</span>
-                }
-            }
-<span class="nc" id="L479">        } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L480">            java.util.logging.Logger.getLogger(TelaClienteCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L481">        } catch (InstantiationException ex) {</span>
-<span class="nc" id="L482">            java.util.logging.Logger.getLogger(TelaClienteCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L483">        } catch (IllegalAccessException ex) {</span>
-<span class="nc" id="L484">            java.util.logging.Logger.getLogger(TelaClienteCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L485">        } catch (javax.swing.UnsupportedLookAndFeelException ex) {</span>
-<span class="nc" id="L486">            java.util.logging.Logger.getLogger(TelaClienteCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L487">        }</span>
-        //&lt;/editor-fold&gt;
-
-        /* Create and display the form */
-<span class="nc" id="L491">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
+public static void main(String args[]) {
+<span class="nc" id="L467">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
             public void run() {
-<span class="nc" id="L493">                new TelaClienteCadastro().setVisible(true);</span>
-<span class="nc" id="L494">            }</span>
+           try{   
+<span class="nc" id="L470">               javax.swing.UIManager um = new javax.swing.UIManager();</span>
+<span class="nc" id="L471">               um.setLookAndFeel(um.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L472">           }catch(Exception e){</span>
+<span class="nc" id="L473">               e.printStackTrace();</span>
+           }
+           finally {
+<span class="nc" id="L476">                new TelaClienteCadastro().setVisible(true); //troque o nemo do frame!</span>
+<span class="nc" id="L477">            }</span>
+<span class="nc" id="L478">            }</span>
         });
-<span class="nc" id="L496">    }</span>
+<span class="nc" id="L480">    }</span>
 
     // Variables declaration - do not modify                     
     private javax.swing.JTextField bairroCliente;

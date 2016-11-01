@@ -217,7 +217,7 @@ public class conexaoBD {
     
     public List<ProdutoDAO> consultaTodosProdutos() throws SQLException{
         
-    List<ProdutoDAO> clis = new ArrayList<>();
+        List<ProdutoDAO> clis = new ArrayList<>();
         conectarBD();
         
         try (PreparedStatement pstm = conexao.prepareStatement("select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS")) {
@@ -239,9 +239,9 @@ public class conexaoBD {
         
        desconBD();
         
-       return clis; 
-        
+       return clis;    
     }
+    
     
     public List<ProdutoDAO> consultaTodosProdutosPorNome(String nome) throws SQLException{
         
@@ -298,6 +298,30 @@ public class conexaoBD {
        return clis; 
         
     }
+    
+    public ProdutoDAO consultaTodosProdutosPorCodigo2(String codigo) throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conectarBD();
+        
+        try (PreparedStatement pstm = conexao.prepareStatement("select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PCod = "+codigo+"")) {
+            ResultSet rs = pstm.executeQuery();
+           
+            while(rs.next()){              
+                p.setCodigo(rs.getInt("PCod"));
+                p.setNome(rs.getString("PNome"));
+                p.setDescricaoReduzida(rs.getString("PDescReduzida"));
+                p.setFabricante(rs.getString("PFabricante"));
+                p.setCusto(rs.getFloat("PCusto"));
+                p.setTributos(rs.getFloat("PTributos"));
+            }   
+        }
+        
+       desconBD();
+        
+       return p; 
+        
+    }
+    
     
     public boolean excluirProduto(String codigo) throws SQLException{
         conectarBD();

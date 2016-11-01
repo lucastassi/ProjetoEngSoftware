@@ -488,38 +488,21 @@ public class alterarExcluirCliente extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot; Look and feel setting code (optional) &quot;&gt;
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-<span class="nc bnc" id="L498" title="All 2 branches missed.">            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {</span>
-<span class="nc bnc" id="L499" title="All 2 branches missed.">                if (&quot;Nimbus&quot;.equals(info.getName())) {</span>
-<span class="nc" id="L500">                    javax.swing.UIManager.setLookAndFeel(info.getClassName());</span>
-<span class="nc" id="L501">                    break;</span>
-                }
-            }
-<span class="nc" id="L504">        } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L505">            java.util.logging.Logger.getLogger(alterarExcluirCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L506">        } catch (InstantiationException ex) {</span>
-<span class="nc" id="L507">            java.util.logging.Logger.getLogger(alterarExcluirCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L508">        } catch (IllegalAccessException ex) {</span>
-<span class="nc" id="L509">            java.util.logging.Logger.getLogger(alterarExcluirCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L510">        } catch (javax.swing.UnsupportedLookAndFeelException ex) {</span>
-<span class="nc" id="L511">            java.util.logging.Logger.getLogger(alterarExcluirCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
-<span class="nc" id="L512">        }</span>
-        //&lt;/editor-fold&gt;
-        
-        /* Create and display the form */
-<span class="nc" id="L516">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
+public static void main(String args[]) {
+<span class="nc" id="L492">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
             public void run() {
-<span class="nc" id="L518">                new alterarExcluirCliente().setVisible(true); </span>
-                
-<span class="nc" id="L520">            }</span>
+           try{   
+<span class="nc" id="L495">               javax.swing.UIManager um = new javax.swing.UIManager();</span>
+<span class="nc" id="L496">               um.setLookAndFeel(um.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L497">           }catch(Exception e){</span>
+<span class="nc" id="L498">               e.printStackTrace();</span>
+           }
+           finally {
+<span class="nc" id="L501">                new alterarExcluirCliente().setVisible(true); //troque o nemo do frame!</span>
+<span class="nc" id="L502">            }</span>
+<span class="nc" id="L503">            }</span>
         });
-<span class="nc" id="L522">    }</span>
+<span class="nc" id="L505">    }</span>
     
 
     // Variables declaration - do not modify                     

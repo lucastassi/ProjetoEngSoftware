@@ -191,8 +191,8 @@ public class ProdutoDAO {
         conexaoBD conexao = new conexaoBD();
          
         try{
-            //va.valida_entrada_produto(codigo, codBarras, nome, descricao, descricaoReduzida, fabricante, outros, categoria, localEstoque, unCompra, estoqueInicial,
-                    //custo,tributos, dataFab, dataVal, observacoes);
+            va.valida_entrada_produto(codigo, nome, descricao, descricaoReduzida, estoqueInicial,
+                    custo,tributos, dataFab, dataVal);
             conexao.inserirDadosProduto(this);
             return true;
         }
@@ -201,10 +201,13 @@ public class ProdutoDAO {
         }
     }
         
-    public boolean atualizaProduto() throws entradaInvalidaException {
+    public boolean atualizaProduto() throws entradaInvalidaException, SQLException {
         conexaoBD conexao = new conexaoBD();
+        validaEntrada va = new validaEntrada();
         
         try{
+            va.valida_entrada_produto(codigo, nome, descricao, descricaoReduzida, estoqueInicial, custo,tributos, dataFab, dataVal);
+            
             conexao.atualizarProduto(this);
             return true;
         }
