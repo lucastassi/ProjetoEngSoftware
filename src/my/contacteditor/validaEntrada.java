@@ -40,6 +40,13 @@ public class validaEntrada {
         validaDatas(dataVal);
         
     }
+    
+    public void valida_entrada_historico(int codigo, String Data, int quantidade, int PCod, String FCod) throws entradaInvalidaException{
+        validaCodigo(codigo);
+        validaDatas(Data);
+        validaEstoque(quantidade);
+        validaCNPJ(FCod);
+    }
    
     public boolean validaCodigo(int codigo) throws entradaInvalidaException{
         

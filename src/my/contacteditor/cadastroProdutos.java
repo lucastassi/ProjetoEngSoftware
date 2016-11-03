@@ -7,6 +7,8 @@ package my.contacteditor;
 
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import my.contacteditor.conexao.conexaoBD;
 
@@ -17,6 +19,10 @@ import my.contacteditor.conexao.conexaoBD;
 public class cadastroProdutos extends javax.swing.JFrame {
 
     int verificaSeEhAlteracao = 0;
+    
+    //inserido pelo diniz
+    int historicocadastrado = 0;
+    
     
     /**
      * Creates new form Produtos
@@ -117,6 +123,12 @@ public class cadastroProdutos extends javax.swing.JFrame {
         POutros = new javax.swing.JTextField();
         PFab = new javax.swing.JFormattedTextField();
         PVal = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        NumeroCompra = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        datadacompra = new javax.swing.JFormattedTextField();
+        jLabel19 = new javax.swing.JLabel();
+        CNPJFORN = new javax.swing.JFormattedTextField();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -216,12 +228,45 @@ public class cadastroProdutos extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        PFab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PFabActionPerformed(evt);
+            }
+        });
 
         try {
             PVal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+
+        jLabel9.setText("Número da Compra:");
+
+        jLabel18.setText("Data da Compra:");
+
+        try {
+            datadacompra.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        datadacompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datadacompraActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("CNPJ do Fornecedor:");
+
+        try {
+            CNPJFORN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        CNPJFORN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CNPJFORNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,7 +299,9 @@ public class cadastroProdutos extends javax.swing.JFrame {
                                             .addGap(18, 18, 18)
                                             .addComponent(jLabel13)))
                                     .addGap(12, 12, 12)
-                                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel19))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -291,13 +338,21 @@ public class cadastroProdutos extends javax.swing.JFrame {
                                                 .addComponent(PFabricante, 0, 301, Short.MAX_VALUE)
                                                 .addComponent(PCodBarras)))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel15)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(PFab, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel15)
+                                                .addComponent(jLabel9)
+                                                .addComponent(jLabel18))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel16)
-                                            .addGap(4, 4, 4)
-                                            .addComponent(PVal, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(NumeroCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(PFab, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel16)
+                                                    .addGap(4, 4, 4)
+                                                    .addComponent(PVal, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(datadacompra, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(CNPJFORN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addComponent(jLabel17))
                             .addComponent(jScrollPane2)))
                     .addGroup(layout.createSequentialGroup()
@@ -344,17 +399,23 @@ public class cadastroProdutos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(PUnVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PUnVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(NumeroCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(PEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(datadacompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(PCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19)
+                    .addComponent(CNPJFORN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -371,7 +432,13 @@ public class cadastroProdutos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ConsultaProdutos cp = new ConsultaProdutos();
-
+        conexaoBD conexao = new conexaoBD();
+        
+        //inserido pelo diniz
+        int codigocompra = Integer.parseInt(NumeroCompra.getText());
+        String datacompra = datadacompra.getText();
+        String CNPJFornecedor = CNPJFORN.getText();
+        
         int codigo = Integer.parseInt(PCodigo.getText());
         String nome = Pnome.getText();
         String codBarras = PCodBarras.getText();
@@ -389,10 +456,27 @@ public class cadastroProdutos extends javax.swing.JFrame {
         String dataValidade = PVal.getText();
         String observacao = PObs.getText();    
         
+        //inserido pelo diniz
+        HistoricoDAO Hist = new HistoricoDAO(codigocompra, datacompra, estoque, codigo, CNPJFornecedor);
+        HistoricoDAO H = null;
+        
         ProdutoDAO prod = new ProdutoDAO(codigo, nome, descricao, descReduzida, codBarras,
                                          localEstoque, fabricante, categoria, dataFabricacao,
                                          dataValidade, unVenda, estoque, custo, tributos, observacao, outros);
-
+        
+        //inserido pelo diniz
+        try {
+            H = conexao.consultarHistorico(codigocompra);
+        } catch (SQLException ex) {
+            Logger.getLogger(cadastroProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(H.getHcodigo()==0)
+            historicocadastrado=0;
+        else
+            historicocadastrado=1;
+        
+        
+        
         if(verificaSeEhAlteracao==0){
             try{
                 prod.insereProduto();
@@ -403,6 +487,28 @@ public class cadastroProdutos extends javax.swing.JFrame {
                 }catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null,""+ex,"Erro",JOptionPane.ERROR_MESSAGE,null);
                 }
+            
+            //inserido pelo diniz
+            if(historicocadastrado==0){
+                try{
+                    Hist.insereHistorico();
+                    JOptionPane.showMessageDialog(null, "Cadastrado no histórico com sucesso!");
+                }
+                catch(entradaInvalidaException ex){
+                    JOptionPane.showMessageDialog(null,""+ex.toString().substring(85,ex.toString().length()),"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,""+ex,"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }
+            }else{
+                try{
+                    Hist.insereHistorico2();
+                }
+                catch(entradaInvalidaException ex){
+                    JOptionPane.showMessageDialog(null,""+ex.toString().substring(85,ex.toString().length()),"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,""+ex,"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }
+        }
         }else{
             if(verificaSeEhAlteracao==1){
                 
@@ -417,6 +523,8 @@ public class cadastroProdutos extends javax.swing.JFrame {
                 }
             }
         }
+        
+
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -453,6 +561,18 @@ public class cadastroProdutos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PCustoActionPerformed
 
+    private void PFabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PFabActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PFabActionPerformed
+
+    private void datadacompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datadacompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_datadacompraActionPerformed
+
+    private void CNPJFORNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CNPJFORNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CNPJFORNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -473,6 +593,8 @@ public static void main(String args[]) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField CNPJFORN;
+    private javax.swing.JTextField NumeroCompra;
     private javax.swing.JTextField PCodBarras;
     public javax.swing.JTextField PCodigo;
     private javax.swing.JTextField PCusto;
@@ -489,6 +611,7 @@ public static void main(String args[]) {
     private javax.swing.JTextField Pdesc;
     private javax.swing.JTextField PlocalEstoque;
     private javax.swing.JTextField Pnome;
+    private javax.swing.JFormattedTextField datadacompra;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -500,6 +623,8 @@ public static void main(String args[]) {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -507,6 +632,7 @@ public static void main(String args[]) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
