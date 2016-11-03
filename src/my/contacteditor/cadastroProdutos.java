@@ -117,7 +117,6 @@ public class cadastroProdutos extends javax.swing.JFrame {
         POutros = new javax.swing.JTextField();
         PFab = new javax.swing.JFormattedTextField();
         PVal = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -224,8 +223,6 @@ public class cadastroProdutos extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        jLabel9.setText("jLabel9");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -257,9 +254,7 @@ public class cadastroProdutos extends javax.swing.JFrame {
                                             .addGap(18, 18, 18)
                                             .addComponent(jLabel13)))
                                     .addGap(12, 12, 12)
-                                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(60, 60, 60)
-                                    .addComponent(jLabel9))
+                                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -359,8 +354,7 @@ public class cadastroProdutos extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(PCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                    .addComponent(PTributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -418,6 +412,8 @@ public class cadastroProdutos extends javax.swing.JFrame {
                         //dispose();               
                 }catch(entradaInvalidaException ex){
                     JOptionPane.showMessageDialog(null,""+ex.toString().substring(85,ex.toString().length()),"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }catch(SQLException e){
+                    JOptionPane.showMessageDialog(null,""+e,"Erro",JOptionPane.ERROR_MESSAGE,null);
                 }
             }
         }
@@ -511,7 +507,6 @@ public static void main(String args[]) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
