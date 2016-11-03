@@ -52,7 +52,7 @@ public class validaEntrada {
     
     public boolean validaNome(String nome)throws entradaInvalidaException{
                 
-        if(nome.matches("[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*")){
+        if(nome.matches("[a-zA-z0-9áéíóú\\-\\.\\/]{1,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{1,})*")){
             return true;
         }else{
             throw new entradaInvalidaException("Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida");
