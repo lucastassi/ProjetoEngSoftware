@@ -21,6 +21,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import my.contacteditor.ClienteDAO;
 import my.contacteditor.HistoricoDAO;
+import my.contacteditor.ItemPedidoDAO;
+import my.contacteditor.PedidoDAO;
 import my.contacteditor.ProdutoDAO;
 import my.contacteditor.entradaInvalidaException;
 import my.contacteditor.validaEntrada;
@@ -476,5 +478,88 @@ public class conexaoBD {
             state.executeUpdate("delete from HISTORICO_COMPRA where HCod = '"+codigo+"'");
             desconBD(); 
             return true;
-        }    
+        }  
+    
+    public void insereDadosPedido(PedidoDAO p) throws SQLException, entradaInvalidaException{
+        conectarBD();
+        state = conexao.createStatement();
+        
+        state.executeUpdate("insert into PEDIDO (PedValor, PedDataEntrega, PedPago)"
+                    + "values ('"+p.getValor()+"','"+p.getDataEntrega()+"','"+p.getPago()+"');");
+
+        desconBD();
+    }
+    
+    public void insereDadosItemPedido(ItemPedidoDAO i) throws SQLException, entradaInvalidaException{
+        conectarBD();
+        
+        state = conexao.createStatement();
+        
+        state.executeUpdate("insert into ITEMPEDIDO (ItemQuantidade, PCod, PedCod) values ('"+i.getQuantidade()+"','"+i.getProCod()+"','"+i.getPedCod()+"');");
+                
+        desconBD();
+    }
+    
+     public void atualizarPedido(PedidoDAO p) throws SQLException, entradaInvalidaException{
+        conectarBD();
+        state = conexao.createStatement();
+ 
+            state.executeUpdate("update PEDIDO set PedValor= '"+p.getValor()+"', PedDataEntrega= '"+p.getDataEntrega()+"', PedPago = '"+p.getPago()+"' where PedCod = '"+p.getCodigo()+"';"); 
+    
+        desconBD();
+    }
+     
+    /*Realiza um consulta no BD através do codigo*/
+    public List<PedidoDAO> consultarPedido(String codigo) throws SQLException{
+        ArrayList<PedidoDAO> pedList = new ArrayList<PedidoDAO>();
+        
+        conectarBD();
+        Statement state = conexao.createStatement();
+        try(PreparedStatement p = conexao.prepareStatement("select * from PEDIDO where PedCod= "+codigo+"")){
+            ResultSet resSet = p.executeQuery();
+            if(resSet.next()){
+                PedidoDAO ped = new PedidoDAO();
+                ped.setCodigo(resSet.getInt("PedCod"));
+                ped.setValor(resSet.getFloat("PedValor"));
+                ped.setDataEntrega(resSet.getString("PedDataEntrega"));
+                ped.setPago(resSet.getBoolean("PedPago"));           
+                
+                pedList.add(ped);
+            }
+        }
+        
+       desconBD();          
+       return pedList;
+    }
+    
+     /*Realiza um consulta no BD através do codigo*/
+    public List<PedidoDAO> consultarTodosPedidos(String codigo) throws SQLException{
+        List<PedidoDAO> ped = new ArrayList<PedidoDAO>();
+        
+        conectarBD();
+        Statement state = conexao.createStatement();
+        try(PreparedStatement p = conexao.prepareStatement("select * from PEDIDO")){
+            ResultSet resSet = p.executeQuery();
+            while(resSet.next()){
+                PedidoDAO  pedido = new PedidoDAO();
+                pedido.setCodigo(resSet.getInt("PedCod"));
+                pedido.setValor(resSet.getFloat("PedValor"));
+                pedido.setDataEntrega(resSet.getString("PedDataEntrega"));
+                pedido.setPago(resSet.getBoolean("PedPago")); 
+                
+                ped.add(pedido);
+            }
+        }
+        
+       desconBD();          
+       return ped;
+    }
+    
+    public boolean excluirPedido(String codigo) throws SQLException{
+        conectarBD();
+        state = conexao.createStatement();
+        state.executeUpdate("delete from PEDIDO where PedCod= '"+codigo+"'");
+        desconBD();
+        return true;
+    }
 }

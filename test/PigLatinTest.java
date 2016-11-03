@@ -1,11 +1,17 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import my.contacteditor.ClienteDAO;
 import my.contacteditor.FornecedorDAO;
+import my.contacteditor.PedidoDAO;
 import my.contacteditor.ProdutoDAO;
 import my.contacteditor.conexao.conexaoBD;
 import my.contacteditor.validaEntrada;
@@ -26,7 +32,6 @@ import static org.junit.Assert.*;
 public class PigLatinTest {
     
     validaEntrada ve = new validaEntrada();
-
     
     public PigLatinTest() {
     }
@@ -35,16 +40,8 @@ public class PigLatinTest {
     public static void setUpClass() {
     }
     
-    /*EXECUTA TODOS OS TESTES PARA DEPOIS EXECUTAR ESTE (DELETAR PRODUTO DO BANCO)*/
     @AfterClass
-    public static void tearDownClass() throws SQLException{
-     int codigo = 12345; 
-    conexaoBD conexao = new conexaoBD();
-    ProdutoDAO p = new ProdutoDAO();
-    p.setCodigo(12345);
-    assertEquals("Refrigerante de Testes", conexao.consultarProduto(Integer.toString(p.getCodigo())).getNome());
-    
-     assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
+    public static void tearDownClass() {
     }
     
     @Before
@@ -1002,8 +999,8 @@ public class PigLatinTest {
     @Test
     public void testeInsercaoProdutoOk() throws SQLException, Exception{
      
-     int codigo = 12345;
-     String nome=("Refrigerante de Testes");
+     int codigo = 1234;
+     String nome=("Coca Cola");
      String descricao = ("descricao");
      String descricaoReduzida = ("DescReduzida");
      String codigoBarras =("12312123");
@@ -1026,12 +1023,6 @@ public class PigLatinTest {
      assertTrue(p.insereProduto());
      }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
 
-    
-    @Test
-    public void testeConsultaProdutoGeral() throws SQLException{
-    }
-    
-    
     @Test
     public void testeInsercaoProdutoFalha() throws SQLException, Exception{
      
@@ -1099,10 +1090,11 @@ public class PigLatinTest {
         conexaoBD conexao = new conexaoBD();
         ProdutoDAO p = new ProdutoDAO();
         
-        p.setCodigo(12345);
+        p.setCodigo(1234);
+        p.setNome("Coca Cola");
         
         try{
-            assertEquals("Refrigerante de Testes", conexao.consultaTodosProdutosPorCodigo2(Integer.toString(p.getCodigo())).getNome());
+            assertEquals(p.getNome(), conexao.consultaTodosProdutosPorCodigo2(Integer.toString(p.getCodigo())).getNome());
         }
         catch(SQLException ex){
             System.out.println("Falha ao consultar. Erro: "+ex);
@@ -1114,9 +1106,9 @@ public class PigLatinTest {
     public void testeAtualizarProduto() throws SQLException, Exception{
         conexaoBD conexao = new conexaoBD();
         
-        int codigo = 12345;
-        String nome=("Refrigerante de Testes");
-        String descricao = ("descricao d");
+        int codigo = 1234;
+        String nome=("Coca Cola Refrigerante");
+        String descricao = ("descricao");
         String descricaoReduzida = ("DescReduzida");
         String codigoBarras =("12312123");
         String PLocalEstoque = ("");
@@ -1326,76 +1318,109 @@ public class PigLatinTest {
     }
     
     @Test
-    public void testaConsultaTodosProdutos() throws SQLException{
-        ProdutoDAO p = new ProdutoDAO();
-        conexaoBD bd = new conexaoBD();
-        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+    public void deletaProduto() throws SQLException{
+     int codigo = 1234; 
+       
+     conexaoBD conexao = new conexaoBD();
+     assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
+    }//Teste para verificar se a deleção funciona
+    
+     
+    /*----------------------------------------------------------------------------------------------------------------
+                                                     TESTE PARA PEDIDO
+   ---------------------------------------------------------------------------------------------------------------- */
+    
+    @Test
+    public void inserePedido() throws SQLException, Exception{
+        String valor=("50");
+        String data=("2002-02-02");
+        String pago=("true");
         
-        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutos();
-        
-        assertEquals(123, a.get(0).getCodigo());
-        
+        PedidoDAO pedido = new PedidoDAO(Float.parseFloat(valor), data, Boolean.parseBoolean(pago));
+
+        assertTrue(pedido.inserePedido());
     }
     
     @Test
-    public void testaConsultaTodosProdutos2() throws SQLException{
-        ProdutoDAO p = new ProdutoDAO();
-        conexaoBD bd = new conexaoBD();
-        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+    public void atualizaPedido() throws SQLException, Exception{
+        String valor = ("30");
+        String data = ("2004-04-04");
+        String pago = ("true");
         
-        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutos();
+        PedidoDAO pedido = new PedidoDAO(Float.parseFloat(valor), data, Boolean.parseBoolean(pago));
+        pedido.setCodigo(3);
         
-        assertEquals("COCA COLA GARRAFA", a.get(0).getNome());
-        
+        assertTrue(pedido.atualizaPedido());
     }
     
+        
     @Test
-    public void testaConsultaProdutosNome() throws SQLException{
-        ProdutoDAO p = new ProdutoDAO();
-        conexaoBD bd = new conexaoBD();
-        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
-        p.setNome("Testes");
+    public void atualizaPedidoFalha() throws SQLException, Exception{
+        String valor = ("-30");
+        String data = ("2004-04-04");
+        String pago = ("true");
         
-        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorNome(p.getNome());
-        
-        assertEquals("Refrigerante de Testes", a.get(0).getNome());
-    }
-    
-    @Test
-    public void testaConsultaProdutosCodigo() throws SQLException{
-        ProdutoDAO p = new ProdutoDAO();
-        conexaoBD bd = new conexaoBD();
-        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
-        p.setCodigo(12345);
-        
-        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorCodigo(Integer.toString(p.getCodigo()));
-        
-        assertEquals("Refrigerante de Testes", a.get(0).getNome());
-    }
-    
-    @Test
-    public void testaConsultaProdutosCodigoFalha() throws SQLException{
-        ProdutoDAO p = new ProdutoDAO();
-        conexaoBD bd = new conexaoBD();
-        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
-        p.setCodigo(1);
-        
-        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorCodigo(Integer.toString(p.getCodigo()));
+        PedidoDAO pedido = new PedidoDAO(Float.parseFloat(valor), data, Boolean.parseBoolean(pago));
+        pedido.setCodigo(3);
         
         try{
-            assertEquals("null", a.get(0).getNome());
-            fail("Era pra ter entrado na excessão!");
-        }catch(Exception ex){
-            
+            assertTrue(pedido.atualizaPedido());
+              fail("Era pra ter entrado na exceção!");
+        }
+        catch(Exception ex){
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));     
+        }
+    }
+    
+    
+    @Test
+    public void inserePedidoFalhaValor() throws SQLException, Exception{
+        String valor = ("-50");
+        String data = ("2004-04-04");
+        String pago = ("true");
+        
+        PedidoDAO pedido = new PedidoDAO(Float.parseFloat(valor), data, Boolean.parseBoolean(pago));
+        try{
+            pedido.inserePedido();
+            fail("Era pra ter entrada na excecao");
+        }
+        catch(Exception ex)
+        {
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));
         }
     }
     
     /*
     @Test
-    public void deletaProduto() throws SQLException{
-     int codigo = 12345; 
-       
-     conexaoBD conexao = new conexaoBD();
-     assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
-    }*///Teste para verificar se a deleção funciona
+    public void inserePedidoFalhaData() throws SQLException, Exception{
+        String valor = ("-50");
+        String data = ("2004-13-04");
+        String pago = ("true");
+        
+        PedidoDAO pedido = new PedidoDAO(Float.parseFloat(valor), data, Boolean.parseBoolean(pago));
+        try{
+            pedido.inserePedido();
+            fail("Era pra ter entrada na excecao");
+        }
+        catch(Exception ex)
+        {
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Data Invalida!"));
+        }
+    }*/
+    
+    @Test
+    public void consultaPedidoOK() throws SQLException, Exception{
+        String codigo="4";
+        PedidoDAO p = new PedidoDAO(50,"2002-02-02",true);
+        conexaoBD conexao = new conexaoBD();
+      
+        
+        try{
+            assertEquals(p.getDataEntrega(),conexao.consultarPedido(codigo).get(0).getDataEntrega());
+        }
+        catch(Exception ex)
+        {
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));
+        }
+    }
 }

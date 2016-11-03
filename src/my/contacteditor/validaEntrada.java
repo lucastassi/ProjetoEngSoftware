@@ -47,6 +47,15 @@ public class validaEntrada {
         validaEstoque(quantidade);
         validaCNPJ(FCod);
     }
+    
+    public void valida_entrada_pedido(float valor, String dataEntrega, boolean pago) throws entradaInvalidaException{
+        validaCusto(valor);
+        //validaDatas(dataEntrega);
+    }
+    
+    public void valida_entrada_itemPedido(int quantidade) throws entradaInvalidaException{
+        validaCodigo(quantidade);
+    }
    
     public boolean validaCodigo(int codigo) throws entradaInvalidaException{
         
