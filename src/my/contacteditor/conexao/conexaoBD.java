@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import my.contacteditor.ClienteDAO;
+import my.contacteditor.HistoricoDAO;
 import my.contacteditor.ProdutoDAO;
 import my.contacteditor.entradaInvalidaException;
 import my.contacteditor.validaEntrada;
@@ -331,6 +332,8 @@ public class conexaoBD {
         return true;
     }
     
+    
+    
     public ProdutoDAO consultarProduto(String codigo) throws SQLException{
         ProdutoDAO f = new ProdutoDAO();
         conectarBD();
@@ -356,8 +359,122 @@ public class conexaoBD {
                 f.setObservacoes(rs.getString("PObservacoes"));
             }
         }
-        
+      
        desconBD();          
        return f;
     }
+    
+    
+    //inserido pelo DINIZ
+    public List<HistoricoDAO> consultaTodosHistoricos() throws SQLException{
+        
+        List<HistoricoDAO> clis = new ArrayList<>();
+        conectarBD();
+        
+        try (PreparedStatement pstm = conexao.prepareStatement("select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A "
+                + "join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P "
+                + "on B.PCod=P.PCod order by B.HCod")) {
+            ResultSet rs = pstm.executeQuery();
+           
+            while(rs.next()){              
+                HistoricoDAO f = new HistoricoDAO();
+                
+                f.setHcodigo(rs.getInt("HCod"));
+                f.setData(rs.getString("Hdt"));
+                f.setPCod(rs.getInt("PCod"));
+                f.setPNome(rs.getString("PNome"));
+                f.setQuantidade(rs.getInt("Quantidade"));
+                f.setFNome(rs.getString("Fnome"));
+                
+            clis.add(f);
+            }   
+        }
+        
+       desconBD();
+        
+       return clis;    
+    }
+    //inserido pelo DINIZ
+    public List<HistoricoDAO> consultarHistoricosCODIGO(String codigo) throws SQLException{
+        
+        List<HistoricoDAO> clis = new ArrayList<>();
+        conectarBD();
+        
+        try (PreparedStatement pstm = conexao.prepareStatement("select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A "
+                + "join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P "
+                + "on B.PCod=P.PCod where B.HCod="+codigo+" order by B.HCod")) {
+            ResultSet rs = pstm.executeQuery();
+           
+            while(rs.next()){              
+                HistoricoDAO f = new HistoricoDAO();
+                
+                f.setHcodigo(rs.getInt("HCod"));
+                f.setData(rs.getString("Hdt"));
+                f.setPCod(rs.getInt("PCod"));
+                f.setPNome(rs.getString("PNome"));
+                f.setQuantidade(rs.getInt("Quantidade"));
+                f.setFNome(rs.getString("Fnome"));
+                
+            clis.add(f);
+            }   
+        }
+        
+       desconBD();
+        
+       return clis;    
+    }
+    //inserido pelo DINIZ
+    public void inserirDadosHistorico(HistoricoDAO h)throws SQLException{
+        conectarBD();
+        state = conexao.createStatement();
+
+        state.executeUpdate("insert into HISTORICO_COMPRA (HCod, Hdt)"
+                  + "values ('"+h.getHcodigo()+"','"+h.getData()+"');");
+        state.executeUpdate("insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)"
+                  + "values ('"+h.getPCod()+"','"+h.getHcodigo()+"','"+h.getQuantidade()+"','"+h.getFCod()+"');");
+
+        desconBD();
+    }
+    //inserido pelo DINIZ
+    public void inserirDadosHistorico2(HistoricoDAO h)throws SQLException{
+        conectarBD();
+        state = conexao.createStatement();
+
+        state.executeUpdate("insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)"
+                  + "values ('"+h.getPCod()+"','"+h.getHcodigo()+"','"+h.getQuantidade()+"','"+h.getFCod()+"');");
+
+        desconBD();
+    }
+    //inserido pelo DINIZ
+    public HistoricoDAO consultarHistorico(int HCodigo) throws SQLException{
+        HistoricoDAO f = new HistoricoDAO();
+        conectarBD();
+        Statement state = conexao.createStatement();
+        try(PreparedStatement p = conexao.prepareStatement("select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A "
+                + "join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P "
+                + "on B.PCod=P.PCod where A.HCod= '"+HCodigo+"' order by B.HCod;")){
+            ResultSet rs = p.executeQuery();
+            if(rs.next()){
+                f.setHcodigo(rs.getInt("HCod"));
+                f.setData(rs.getString("Hdt"));
+                f.setPCod(rs.getInt("PCod"));
+                f.setPNome(rs.getString("PNome"));
+                f.setQuantidade(rs.getInt("Quantidade"));
+                f.setFNome(rs.getString("Fnome"));
+                 
+            }
+        }
+      
+       desconBD();          
+       return f;
+    }
+    //inserido pelo DINIZ
+    public boolean excluirHistorico(String codigo) throws SQLException{
+            conectarBD();
+            state = conexao.createStatement();
+            state.executeUpdate("delete from PRODUTO_HISTORICO where HCod = '"+codigo+"'");
+            state.executeUpdate("delete from HISTORICO_COMPRA where HCod = '"+codigo+"'");
+            desconBD(); 
+            return true;
+        }    
 }
