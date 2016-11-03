@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import my.contacteditor.ClienteDAO;
@@ -31,6 +26,7 @@ import static org.junit.Assert.*;
 public class PigLatinTest {
     
     validaEntrada ve = new validaEntrada();
+
     
     public PigLatinTest() {
     }
@@ -39,8 +35,16 @@ public class PigLatinTest {
     public static void setUpClass() {
     }
     
+    /*EXECUTA TODOS OS TESTES PARA DEPOIS EXECUTAR ESTE (DELETAR PRODUTO DO BANCO)*/
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws SQLException{
+     int codigo = 12345; 
+    conexaoBD conexao = new conexaoBD();
+    ProdutoDAO p = new ProdutoDAO();
+    p.setCodigo(12345);
+    assertEquals("Refrigerante de Testes", conexao.consultarProduto(Integer.toString(p.getCodigo())).getNome());
+    
+     assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
     }
     
     @Before
@@ -998,8 +1002,8 @@ public class PigLatinTest {
     @Test
     public void testeInsercaoProdutoOk() throws SQLException, Exception{
      
-     int codigo = 1234;
-     String nome=("Coca Cola");
+     int codigo = 12345;
+     String nome=("Refrigerante de Testes");
      String descricao = ("descricao");
      String descricaoReduzida = ("DescReduzida");
      String codigoBarras =("12312123");
@@ -1022,6 +1026,12 @@ public class PigLatinTest {
      assertTrue(p.insereProduto());
      }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
 
+    
+    @Test
+    public void testeConsultaProdutoGeral() throws SQLException{
+    }
+    
+    
     @Test
     public void testeInsercaoProdutoFalha() throws SQLException, Exception{
      
@@ -1089,11 +1099,10 @@ public class PigLatinTest {
         conexaoBD conexao = new conexaoBD();
         ProdutoDAO p = new ProdutoDAO();
         
-        p.setCodigo(1234);
-        p.setNome("Coca Cola");
+        p.setCodigo(12345);
         
         try{
-            assertEquals(p.getNome(), conexao.consultaTodosProdutosPorCodigo2(Integer.toString(p.getCodigo())).getNome());
+            assertEquals("Refrigerante de Testes", conexao.consultaTodosProdutosPorCodigo2(Integer.toString(p.getCodigo())).getNome());
         }
         catch(SQLException ex){
             System.out.println("Falha ao consultar. Erro: "+ex);
@@ -1105,9 +1114,9 @@ public class PigLatinTest {
     public void testeAtualizarProduto() throws SQLException, Exception{
         conexaoBD conexao = new conexaoBD();
         
-        int codigo = 1234;
-        String nome=("Coca Cola Refrigerante");
-        String descricao = ("descricao");
+        int codigo = 12345;
+        String nome=("Refrigerante de Testes");
+        String descricao = ("descricao d");
         String descricaoReduzida = ("DescReduzida");
         String codigoBarras =("12312123");
         String PLocalEstoque = ("");
@@ -1317,10 +1326,76 @@ public class PigLatinTest {
     }
     
     @Test
+    public void testaConsultaTodosProdutos() throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conexaoBD bd = new conexaoBD();
+        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+        
+        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutos();
+        
+        assertEquals(123, a.get(0).getCodigo());
+        
+    }
+    
+    @Test
+    public void testaConsultaTodosProdutos2() throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conexaoBD bd = new conexaoBD();
+        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+        
+        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutos();
+        
+        assertEquals("COCA COLA GARRAFA", a.get(0).getNome());
+        
+    }
+    
+    @Test
+    public void testaConsultaProdutosNome() throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conexaoBD bd = new conexaoBD();
+        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+        p.setNome("Testes");
+        
+        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorNome(p.getNome());
+        
+        assertEquals("Refrigerante de Testes", a.get(0).getNome());
+    }
+    
+    @Test
+    public void testaConsultaProdutosCodigo() throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conexaoBD bd = new conexaoBD();
+        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+        p.setCodigo(12345);
+        
+        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorCodigo(Integer.toString(p.getCodigo()));
+        
+        assertEquals("Refrigerante de Testes", a.get(0).getNome());
+    }
+    
+    @Test
+    public void testaConsultaProdutosCodigoFalha() throws SQLException{
+        ProdutoDAO p = new ProdutoDAO();
+        conexaoBD bd = new conexaoBD();
+        ArrayList<ProdutoDAO> a = new ArrayList<ProdutoDAO>();
+        p.setCodigo(1);
+        
+        a = (ArrayList<ProdutoDAO>) bd.consultaTodosProdutosPorCodigo(Integer.toString(p.getCodigo()));
+        
+        try{
+            assertEquals("null", a.get(0).getNome());
+            fail("Era pra ter entrado na excessão!");
+        }catch(Exception ex){
+            
+        }
+    }
+    
+    /*
+    @Test
     public void deletaProduto() throws SQLException{
-     int codigo = 1234; 
+     int codigo = 12345; 
        
      conexaoBD conexao = new conexaoBD();
      assertEquals(true, conexao.excluirProduto(Integer.toString(codigo)));
-    }//Teste para verificar se a deleção funciona
+    }*///Teste para verificar se a deleção funciona
 }
