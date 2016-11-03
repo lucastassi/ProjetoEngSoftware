@@ -1434,7 +1434,7 @@ public class PigLatinTest {
               fail("Era pra ter entrado na exceção!");
         }
         catch(Exception ex){
-            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));     
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite ',' para separar os centavos!"));     
         }
     }
     
@@ -1452,7 +1452,7 @@ public class PigLatinTest {
         }
         catch(Exception ex)
         {
-            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));
+            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite ',' para separar os centavos!"));
         }
     }
     
@@ -1479,14 +1479,9 @@ public class PigLatinTest {
         String codigo="4";
         PedidoDAO p = new PedidoDAO(50,"2002-02-02",true);
         conexaoBD conexao = new conexaoBD();
-      
-        
-        try{
-            assertEquals(p.getDataEntrega(),conexao.consultarPedido(codigo).get(0).getDataEntrega());
-        }
-        catch(Exception ex)
-        {
-            assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Custo inválido! \n - Digite números sem pontos (exceto vírgula)"));
-        }
+
+        assertEquals(p.getDataEntrega(),conexao.consultarPedido(codigo).get(0).getDataEntrega());
+       
+
     }
 }
