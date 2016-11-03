@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PedidoDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;DistDeBebidas_Software&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">my.contacteditor</a> &gt; <span class="el_source">PedidoDAO.java</span></div><h1>PedidoDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package my.contacteditor;
+
+import java.sql.SQLException;
+import my.contacteditor.conexao.conexaoBD;
+
+/**
+ *
+ * @author  Lucas Tassi
+ *          Lucas Diniz
+ *          Lucas Barbosa
+ *          Jhordan Garcia
+ */
+public class PedidoDAO {
+    
+    private int codigo;
+    private float valor;
+    private String dataEntrega;
+    private boolean pago;
+    
+<span class="fc" id="L25">    public PedidoDAO(float valor, String dataEntrega, boolean pago){</span>
+<span class="fc" id="L26">        this.valor=valor;</span>
+<span class="fc" id="L27">        this.dataEntrega=dataEntrega;</span>
+<span class="fc" id="L28">        this.pago=pago;</span>
+<span class="fc" id="L29">    }</span>
+
+<span class="fc" id="L31">    public PedidoDAO() {</span>
+        
+<span class="fc" id="L33">    }</span>
+    
+    
+    public int getCodigo() {
+<span class="fc" id="L37">        return codigo;</span>
+    }
+
+    public void setCodigo(int codigo) {
+<span class="fc" id="L41">        this.codigo = codigo;</span>
+<span class="fc" id="L42">    }</span>
+    
+    public float getValor() {
+<span class="fc" id="L45">        return valor;</span>
+    }
+
+    public void setValor(float valor) {
+<span class="fc" id="L49">        this.valor = valor;</span>
+<span class="fc" id="L50">    }</span>
+
+    public String getDataEntrega() {
+<span class="fc" id="L53">        return dataEntrega;</span>
+    }
+
+    public void setDataEntrega(String dataEntrega) {
+<span class="fc" id="L57">        this.dataEntrega = dataEntrega;</span>
+<span class="fc" id="L58">    }</span>
+
+    public boolean getPago() {
+<span class="fc" id="L61">        return pago;</span>
+    }
+
+    public void setPago(boolean pago) {
+<span class="fc" id="L65">        this.pago = pago;</span>
+<span class="fc" id="L66">    }</span>
+    
+     /*Utilizado nos testes (retorna true/false para realizar as comparações)*/
+    public boolean inserePedido() throws entradaInvalidaException, SQLException{
+<span class="fc" id="L70">        validaEntrada ve = new validaEntrada();</span>
+<span class="fc" id="L71">        conexaoBD conexao = new conexaoBD();</span>
+         
+        try{
+<span class="fc" id="L74">            ve.valida_entrada_pedido(valor,dataEntrega,pago);</span>
+<span class="fc" id="L75">            conexao.insereDadosPedido(this);</span>
+<span class="fc" id="L76">            return true;</span>
+        }
+<span class="fc" id="L78">        catch(Exception ex){</span>
+<span class="fc" id="L79">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+    }
+    
+    /*Utilizado nos testes (retorna true/false para realizar as comparações)*/
+    public boolean atualizaPedido() throws entradaInvalidaException {
+<span class="fc" id="L85">        validaEntrada ve = new validaEntrada();</span>
+<span class="fc" id="L86">        conexaoBD conexao = new conexaoBD();</span>
+        
+        try{
+<span class="fc" id="L89">            ve.valida_entrada_pedido(valor,dataEntrega,pago);</span>
+<span class="fc" id="L90">            conexao.atualizarPedido(this);</span>
+<span class="fc" id="L91">            return true;</span>
+        }
+<span class="fc" id="L93">        catch(Exception ex){</span>
+<span class="fc" id="L94">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+       
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

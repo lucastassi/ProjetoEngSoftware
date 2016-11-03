@@ -40,58 +40,74 @@ package my.contacteditor;
 <span class="fc" id="L40">        validaDatas(dataVal);</span>
         
 <span class="fc" id="L42">    }</span>
+    
+    public void valida_entrada_historico(int codigo, String Data, int quantidade, int PCod, String FCod) throws entradaInvalidaException{
+<span class="nc" id="L45">        validaCodigo(codigo);</span>
+<span class="nc" id="L46">        validaDatas(Data);</span>
+<span class="nc" id="L47">        validaEstoque(quantidade);</span>
+<span class="nc" id="L48">        validaCNPJ(FCod);</span>
+<span class="nc" id="L49">    }</span>
+    
+    public void valida_entrada_pedido(float valor, String dataEntrega, boolean pago) throws entradaInvalidaException{
+<span class="fc" id="L52">        validaCusto(valor);</span>
+        //validaDatas(dataEntrega);
+<span class="fc" id="L54">    }</span>
+    
+    public void valida_entrada_itemPedido(int quantidade) throws entradaInvalidaException{
+<span class="nc" id="L57">        validaCodigo(quantidade);</span>
+<span class="nc" id="L58">    }</span>
    
     public boolean validaCodigo(int codigo) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(Integer.toString(codigo).matches(&quot;[0-9]{1,}&quot;))</span>
-<span class="fc" id="L47">            return true;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if(Integer.toString(codigo).matches(&quot;[0-9]{1,}&quot;))</span>
+<span class="fc" id="L63">            return true;</span>
         else{
-<span class="fc" id="L49">            throw new entradaInvalidaException(&quot;Código inválido!\n - Somente números&quot;);</span>
+<span class="fc" id="L65">            throw new entradaInvalidaException(&quot;Código inválido!\n - Somente números&quot;);</span>
         }
     }
     
     public boolean validaNome(String nome)throws entradaInvalidaException{
                 
-<span class="fc bfc" id="L55" title="All 2 branches covered.">        if(nome.matches(&quot;[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*&quot;)){</span>
-<span class="fc" id="L56">            return true;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if(nome.matches(&quot;[a-zA-z0-9áéíóú\\-\\.\\/]{1,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{1,})*&quot;)){</span>
+<span class="fc" id="L72">            return true;</span>
         }else{
-<span class="fc" id="L58">            throw new entradaInvalidaException(&quot;Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida&quot;);</span>
+<span class="fc" id="L74">            throw new entradaInvalidaException(&quot;Nome inválido! Verifique:\n-Nome\n-Descrição\n-Desc.Reduzida&quot;);</span>
         }
     }
     
     public boolean validaEstoque(int estoque)throws entradaInvalidaException{
                 
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if(Integer.toString(estoque).matches(&quot;[0-9]{1,}&quot;)){</span>
-<span class="fc" id="L65">            return true;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if(Integer.toString(estoque).matches(&quot;[0-9]{1,}&quot;)){</span>
+<span class="fc" id="L81">            return true;</span>
         }else{
-<span class="fc" id="L67">            throw new entradaInvalidaException(&quot;Estoque inicial inválido! \n - Somente números inteiros&quot;);</span>
+<span class="fc" id="L83">            throw new entradaInvalidaException(&quot;Estoque inicial inválido! \n - Somente números inteiros&quot;);</span>
         }
     }
     
      public boolean validaCusto(float custo)throws entradaInvalidaException{
                 
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        if(Float.toString(custo).replace(&quot;.&quot;, &quot;,&quot;).matches(&quot;^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$&quot;)){</span>
-<span class="fc" id="L74">            return true;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if(Float.toString(custo).replace(&quot;.&quot;, &quot;,&quot;).matches(&quot;^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$&quot;)){</span>
+<span class="fc" id="L90">            return true;</span>
         }else{
-<span class="fc" id="L76">            throw new entradaInvalidaException(&quot;Custo inválido! \n - Digite ',' para separar os centavos!&quot;);</span>
+<span class="fc" id="L92">            throw new entradaInvalidaException(&quot;Custo inválido! \n - Digite ',' para separar os centavos!&quot;);</span>
         }
     }
      
           public boolean validaTributos(float estoque)throws entradaInvalidaException{
                 
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if(Float.toString(estoque).replace(&quot;.&quot;, &quot;,&quot;).matches(&quot;^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$&quot;)){</span>
-<span class="fc" id="L83">            return true;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if(Float.toString(estoque).replace(&quot;.&quot;, &quot;,&quot;).matches(&quot;^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{1,2})?$&quot;)){</span>
+<span class="fc" id="L99">            return true;</span>
         }else{
-<span class="fc" id="L85">            throw new entradaInvalidaException(&quot;Tributo inválido! \n - Digite com '.' ou ','!&quot;);</span>
+<span class="fc" id="L101">            throw new entradaInvalidaException(&quot;Tributo inválido! \n - Digite com '.' ou ','!&quot;);</span>
         }
     }
      
      public boolean validaDatas(String data)throws entradaInvalidaException{
                 
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if(data.matches(&quot;([0-9]{2})/([0-9]{2})/([0-9]{4})&quot;)){</span>
-<span class="fc" id="L92">            return true;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if(data.matches(&quot;([0-9]{2})/([0-9]{2})/([0-9]{4})&quot;)){</span>
+<span class="fc" id="L108">            return true;</span>
         }else{
-<span class="fc" id="L94">            throw new entradaInvalidaException(&quot;Data inválida!&quot;);</span>
+<span class="fc" id="L110">            throw new entradaInvalidaException(&quot;Data inválida!&quot;);</span>
         }
     } 
     
@@ -99,92 +115,92 @@ package my.contacteditor;
   
     public boolean validaCNPJ(String cnpj) throws entradaInvalidaException{
     
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        if(cnpj.matches(&quot;[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\\/[0-9]{4}\\-[0-9]{2}&quot;)){</span>
-<span class="fc" id="L103">            return true;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if(cnpj.matches(&quot;[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}\\/[0-9]{4}\\-[0-9]{2}&quot;)){</span>
+<span class="fc" id="L119">            return true;</span>
         }else{
-<span class="fc" id="L105">            throw new entradaInvalidaException(&quot;CNPJ Inválido!&quot;);</span>
+<span class="fc" id="L121">            throw new entradaInvalidaException(&quot;CNPJ Inválido!&quot;);</span>
         }
     }
     
     
     public boolean validaNomeFantasia(String nf) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        if(nf.matches(&quot;[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*&quot;)){</span>
-<span class="fc" id="L113">            return true;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if(nf.matches(&quot;[a-zA-z0-9áéíóú\\-\\.\\/]{2,}(\\s[a-zA-z0-9áéíóú\\-\\.\\/]{2,})*&quot;)){</span>
+<span class="fc" id="L129">            return true;</span>
         }else{
-<span class="fc" id="L115">            throw new entradaInvalidaException(&quot;Nome Fantasia inválido!&quot;);</span>
+<span class="fc" id="L131">            throw new entradaInvalidaException(&quot;Nome Fantasia inválido!&quot;);</span>
         }
     }
     
     public boolean validaRazaoSocial(String rs) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        if(rs.matches(&quot;[a-zA-záéíóú\\-\\.\\/]{2,}(\\s[a-zA-záéíóú\\-\\.\\/]{2,})*&quot;)){</span>
-<span class="fc" id="L122">            return true;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if(rs.matches(&quot;[a-zA-záéíóú\\-\\.\\/]{2,}(\\s[a-zA-záéíóú\\-\\.\\/]{2,})*&quot;)){</span>
+<span class="fc" id="L138">            return true;</span>
         }else{
-<span class="fc" id="L124">            throw new entradaInvalidaException(&quot;Razão social inválido!&quot;);</span>
+<span class="fc" id="L140">            throw new entradaInvalidaException(&quot;Razão social inválido!&quot;);</span>
         }
     }
     
     public boolean validaInscEst(String ie) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        if(ie.matches(&quot;[0-9]{9,14}&quot;)){</span>
-<span class="fc" id="L131">            return true;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if(ie.matches(&quot;[0-9]{9,14}&quot;)){</span>
+<span class="fc" id="L147">            return true;</span>
         }else{
-<span class="fc" id="L133">            throw new entradaInvalidaException(&quot;Inscrição Estadual inválida (digite somente números)&quot;);</span>
+<span class="fc" id="L149">            throw new entradaInvalidaException(&quot;Inscrição Estadual inválida (digite somente números)&quot;);</span>
         }
     }
     
     public boolean validaRua(String rua) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L139" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z0-9áéíóú]{2,}\\.?(\\s[a-zA-z0-9áéíóú]+)*&quot;)){</span>
-<span class="fc" id="L140">            return true;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z0-9áéíóú]{2,}\\.?(\\s[a-zA-z0-9áéíóú]+)*&quot;)){</span>
+<span class="fc" id="L156">            return true;</span>
         }else{
-<span class="fc" id="L142">            throw new entradaInvalidaException(&quot;Rua inválida&quot;);</span>
+<span class="fc" id="L158">            throw new entradaInvalidaException(&quot;Rua inválida&quot;);</span>
         }
     }
     
     public boolean validaNumRua(String nRua) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if(nRua.matches(&quot;([a-zA-Z]{1})?[0-9]{1,4}([a-zA-Z]{1})?&quot;)){ //Pode ser somente número ou A1111 ou 1111B por exemplo.</span>
-<span class="fc" id="L149">            return true;</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if(nRua.matches(&quot;([a-zA-Z]{1})?[0-9]{1,4}([a-zA-Z]{1})?&quot;)){ //Pode ser somente número ou A1111 ou 1111B por exemplo.</span>
+<span class="fc" id="L165">            return true;</span>
         }else{
-<span class="fc" id="L151">            throw new entradaInvalidaException(&quot;Número do endereço inválido!&quot;);</span>
+<span class="fc" id="L167">            throw new entradaInvalidaException(&quot;Número do endereço inválido!&quot;);</span>
         }
     }
     
     public boolean validaBairro(String rua) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L157" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z]{2,}\\.?(\\s[a-zA-z]{2,})*&quot;)){</span>
-<span class="fc" id="L158">            return true;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if(rua.matches(&quot;[a-zA-z]{2,}\\.?(\\s[a-zA-z]{2,})*&quot;)){</span>
+<span class="fc" id="L174">            return true;</span>
         }else{
-<span class="fc" id="L160">            throw new entradaInvalidaException(&quot;Bairro inválido!&quot;);</span>
+<span class="fc" id="L176">            throw new entradaInvalidaException(&quot;Bairro inválido!&quot;);</span>
         }
     }
     
     public boolean validaCep(String cep) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L166" title="All 2 branches covered.">        if(cep.matches(&quot;[0-9]{5}\\-[0-9]{3}&quot;)){</span>
-<span class="fc" id="L167">            return true;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if(cep.matches(&quot;[0-9]{5}\\-[0-9]{3}&quot;)){</span>
+<span class="fc" id="L183">            return true;</span>
         }else{
-<span class="fc" id="L169">            throw new entradaInvalidaException(&quot;CEP inválido!&quot;);</span>
+<span class="fc" id="L185">            throw new entradaInvalidaException(&quot;CEP inválido!&quot;);</span>
         }
     }
     
     public boolean validaCidade(String cid) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L175" title="All 2 branches covered.">        if(cid.matches(&quot;[a-zA-záéíóúãõ]{2,}(\\s[a-zA-záéíóúãõ]{2,})*&quot;)){</span>
-<span class="fc" id="L176">            return true;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        if(cid.matches(&quot;[a-zA-záéíóúãõ]{2,}(\\s[a-zA-záéíóúãõ]{2,})*&quot;)){</span>
+<span class="fc" id="L192">            return true;</span>
         }else{
-<span class="fc" id="L178">            throw new entradaInvalidaException(&quot;Cidade inválida!&quot;);</span>
+<span class="fc" id="L194">            throw new entradaInvalidaException(&quot;Cidade inválida!&quot;);</span>
         }
     }
     
     public boolean validaTelefone(String tel) throws entradaInvalidaException{
         
-<span class="fc bfc" id="L184" title="All 2 branches covered.">        if(tel.matches(&quot;\\([1-9]{2}\\)[0-9]{4}\\-[0-9]{4}&quot;)){</span>
-<span class="fc" id="L185">            return true;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        if(tel.matches(&quot;\\([1-9]{2}\\)[0-9]{4}\\-[0-9]{4}&quot;)){</span>
+<span class="fc" id="L201">            return true;</span>
         }else{
-<span class="fc" id="L187">            throw new entradaInvalidaException(&quot;Telefone inválido!&quot;);</span>
+<span class="fc" id="L203">            throw new entradaInvalidaException(&quot;Telefone inválido!&quot;);</span>
         }
     }
     

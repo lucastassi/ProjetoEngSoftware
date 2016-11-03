@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import my.contacteditor.ClienteDAO;
+import my.contacteditor.HistoricoDAO;
+import my.contacteditor.ItemPedidoDAO;
+import my.contacteditor.PedidoDAO;
 import my.contacteditor.ProdutoDAO;
 import my.contacteditor.entradaInvalidaException;
 import my.contacteditor.validaEntrada;
@@ -35,330 +38,529 @@ public class conexaoBD {
     private Connection oConn;
     private Statement state;
     
-<span class="fc" id="L38">    public conexaoBD(){</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L41">    public conexaoBD(){</span>
+<span class="fc" id="L42">    }</span>
     
     /*Realiza a conexão no BD*/
     public Connection conectarBD(){
         try{
-<span class="fc" id="L44">            String url = &quot;jdbc:postgresql://localhost:5432/postgres&quot;;</span>
-<span class="fc" id="L45">            String driver = &quot;org.postgresql.Driver&quot;;</span>
-<span class="fc" id="L46">            Class.forName(driver);</span>
-<span class="fc" id="L47">            conexao = DriverManager.getConnection(url,&quot;postgres&quot;,&quot;2402&quot;);</span>
-<span class="fc" id="L48">            System.out.println(&quot;Conexão efetuada com sucesso.&quot;);</span>
-<span class="fc" id="L49">            return conexao;    </span>
+<span class="fc" id="L47">            String url = &quot;jdbc:postgresql://localhost:5432/postgres&quot;;</span>
+<span class="fc" id="L48">            String driver = &quot;org.postgresql.Driver&quot;;</span>
+<span class="fc" id="L49">            Class.forName(driver);</span>
+<span class="fc" id="L50">            conexao = DriverManager.getConnection(url,&quot;postgres&quot;,&quot;2402&quot;);</span>
+<span class="fc" id="L51">            System.out.println(&quot;Conexão efetuada com sucesso.&quot;);</span>
+<span class="fc" id="L52">            return conexao;    </span>
         }
-<span class="nc" id="L51">        catch(Exception ex){</span>
-<span class="nc" id="L52">            System.out.println(&quot;Erro ao conectar&quot;+ex);</span>
-<span class="nc" id="L53">            ex.printStackTrace();</span>
-<span class="nc" id="L54">            return null;</span>
+<span class="nc" id="L54">        catch(Exception ex){</span>
+<span class="nc" id="L55">            System.out.println(&quot;Erro ao conectar&quot;+ex);</span>
+<span class="nc" id="L56">            ex.printStackTrace();</span>
+<span class="nc" id="L57">            return null;</span>
         }
     }
     
     /*Desconecta do BD*/
     public void desconBD(){
         try{
-<span class="fc" id="L61">            conexao.close();</span>
-<span class="fc" id="L62">            System.out.println(&quot;Conexão finalizada com sucesso&quot;);</span>
+<span class="fc" id="L64">            conexao.close();</span>
+<span class="fc" id="L65">            System.out.println(&quot;Conexão finalizada com sucesso&quot;);</span>
         }
-<span class="nc" id="L64">        catch(Exception ex){</span>
-<span class="nc" id="L65">            System.out.println(&quot;Erro ao desconectar: &quot;+ex.getMessage());</span>
-<span class="fc" id="L66">        }</span>
-<span class="fc" id="L67">    }</span>
+<span class="nc" id="L67">        catch(Exception ex){</span>
+<span class="nc" id="L68">            System.out.println(&quot;Erro ao desconectar: &quot;+ex.getMessage());</span>
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">    }</span>
     
     /*Exclui o fornecedor do BD através do CNPJ*/
     public boolean excluirFornecedor(String cnpj) throws SQLException{
-<span class="fc" id="L71">        conectarBD();</span>
-<span class="fc" id="L72">        state = conexao.createStatement();</span>
-<span class="fc" id="L73">        state.executeUpdate(&quot;delete from FORNECEDOR where cnpj = '&quot;+cnpj+&quot;'&quot;);</span>
-<span class="fc" id="L74">        desconBD(); </span>
-<span class="fc" id="L75">        return true;</span>
+<span class="fc" id="L74">        conectarBD();</span>
+<span class="fc" id="L75">        state = conexao.createStatement();</span>
+<span class="fc" id="L76">        state.executeUpdate(&quot;delete from FORNECEDOR where cnpj = '&quot;+cnpj+&quot;'&quot;);</span>
+<span class="fc" id="L77">        desconBD(); </span>
+<span class="fc" id="L78">        return true;</span>
     }
     
     public boolean excluirCliente(String cnpj) throws SQLException{
-<span class="fc" id="L79">        conectarBD();</span>
-<span class="fc" id="L80">        state = conexao.createStatement();</span>
-<span class="fc" id="L81">        state.executeUpdate(&quot;delete from CLIENTE where CCNPJ = '&quot;+cnpj+&quot;'&quot;);</span>
-<span class="fc" id="L82">        desconBD(); </span>
-<span class="fc" id="L83">        return true;</span>
+<span class="fc" id="L82">        conectarBD();</span>
+<span class="fc" id="L83">        state = conexao.createStatement();</span>
+<span class="fc" id="L84">        state.executeUpdate(&quot;delete from CLIENTE where CCNPJ = '&quot;+cnpj+&quot;'&quot;);</span>
+<span class="fc" id="L85">        desconBD(); </span>
+<span class="fc" id="L86">        return true;</span>
     }
     
     /*Atualiza os dados dos fornecedores no BD*/ 
     /*Nessa classe, é feita uma verificação dos campos utilizando a classe validaEntrada.
     Se houver problema, as exceções são lançadas.*/
     public void atualizarForn(FornecedorDAO f) throws SQLException, entradaInvalidaException{
-<span class="fc" id="L90">        conectarBD();</span>
-<span class="fc" id="L91">        state = conexao.createStatement();</span>
+<span class="fc" id="L93">        conectarBD();</span>
+<span class="fc" id="L94">        state = conexao.createStatement();</span>
  
-<span class="fc" id="L93">            state.executeUpdate(&quot;update FORNECEDOR set FNome = '&quot;+f.getNome()+&quot;',&quot;</span>
-<span class="fc" id="L94">                    + &quot;FRua = '&quot;+f.getRua()+&quot;', FBairro = '&quot;+f.getBairro()+&quot;', FCep = '&quot;+f.getCep()+&quot;',&quot;</span>
-<span class="fc" id="L95">                    + &quot;FEndNum = '&quot;+f.getNum()+&quot;',FRazao= '&quot;+f.getRazao()+&quot;',FCidade = '&quot;+f.getFCidade()+&quot;', FEstado = '&quot;+f.getFEstado()+&quot;',FTel1= '&quot;+f.getTelefone1()+&quot;', FTel2 = '&quot;+f.getTelefone2()+&quot;'&quot;</span>
-<span class="fc" id="L96">                    + &quot; where cnpj= '&quot;+f.getCnpj()+&quot;';&quot;);                        </span>
-<span class="fc" id="L97">        desconBD();</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L96">            state.executeUpdate(&quot;update FORNECEDOR set FNome = '&quot;+f.getNome()+&quot;',&quot;</span>
+<span class="fc" id="L97">                    + &quot;FRua = '&quot;+f.getRua()+&quot;', FBairro = '&quot;+f.getBairro()+&quot;', FCep = '&quot;+f.getCep()+&quot;',&quot;</span>
+<span class="fc" id="L98">                    + &quot;FEndNum = '&quot;+f.getNum()+&quot;',FRazao= '&quot;+f.getRazao()+&quot;',FCidade = '&quot;+f.getFCidade()+&quot;', FEstado = '&quot;+f.getFEstado()+&quot;',FTel1= '&quot;+f.getTelefone1()+&quot;', FTel2 = '&quot;+f.getTelefone2()+&quot;'&quot;</span>
+<span class="fc" id="L99">                    + &quot; where cnpj= '&quot;+f.getCnpj()+&quot;';&quot;);                        </span>
+<span class="fc" id="L100">        desconBD();</span>
+<span class="fc" id="L101">    }</span>
     
     public void atualizarCliente(ClienteDAO c) throws SQLException, entradaInvalidaException{
-<span class="fc" id="L101">        conectarBD();</span>
-<span class="fc" id="L102">        state = conexao.createStatement();</span>
+<span class="fc" id="L104">        conectarBD();</span>
+<span class="fc" id="L105">        state = conexao.createStatement();</span>
  
-<span class="fc" id="L104">            state.executeUpdate(&quot;update CLIENTE set CNome = '&quot;+c.getNome()+&quot;',&quot;</span>
-<span class="fc" id="L105">                    + &quot;CRua = '&quot;+c.getRua()+&quot;', CBairro = '&quot;+c.getBairro()+&quot;', CCep = '&quot;+c.getCep()+&quot;',&quot;</span>
-<span class="fc" id="L106">                    + &quot;CEndNum = '&quot;+c.getNum()+&quot;',CRazao= '&quot;+c.getRazao()+&quot;',CCidade = '&quot;+c.getCCidade()+&quot;', CEstado = '&quot;+c.getCEstado()+&quot;',CTel1= '&quot;+c.getTelefone1()+&quot;', CTel2 = '&quot;+c.getTelefone2()+&quot;'&quot;</span>
-<span class="fc" id="L107">                    + &quot; where CCnpj= '&quot;+c.getCnpj()+&quot;';&quot;);</span>
+<span class="fc" id="L107">            state.executeUpdate(&quot;update CLIENTE set CNome = '&quot;+c.getNome()+&quot;',&quot;</span>
+<span class="fc" id="L108">                    + &quot;CRua = '&quot;+c.getRua()+&quot;', CBairro = '&quot;+c.getBairro()+&quot;', CCep = '&quot;+c.getCep()+&quot;',&quot;</span>
+<span class="fc" id="L109">                    + &quot;CEndNum = '&quot;+c.getNum()+&quot;',CRazao= '&quot;+c.getRazao()+&quot;',CCidade = '&quot;+c.getCCidade()+&quot;', CEstado = '&quot;+c.getCEstado()+&quot;',CTel1= '&quot;+c.getTelefone1()+&quot;', CTel2 = '&quot;+c.getTelefone2()+&quot;'&quot;</span>
+<span class="fc" id="L110">                    + &quot; where CCnpj= '&quot;+c.getCnpj()+&quot;';&quot;);</span>
             
              
-<span class="fc" id="L110">        desconBD();</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L113">        desconBD();</span>
+<span class="fc" id="L114">    }</span>
     
     public void atualizarProduto(ProdutoDAO p) throws SQLException, entradaInvalidaException{
-<span class="fc" id="L114">        conectarBD();</span>
-<span class="fc" id="L115">        state = conexao.createStatement();</span>
+<span class="fc" id="L117">        conectarBD();</span>
+<span class="fc" id="L118">        state = conexao.createStatement();</span>
  
-<span class="fc" id="L117">            state.executeUpdate(&quot;update PRODUTOS set PNome = '&quot;+p.getNome()+&quot;', PDescricao = '&quot;+p.getDescricao()+&quot;', PDescReduzida = '&quot;+p.getDescricaoReduzida()+&quot;',&quot;</span>
-<span class="fc" id="L118">                    + &quot;PLocalEstoque = '&quot;+p.getLocalEstoque()+&quot;', PCBarras= '&quot;+p.getCodBarras()+&quot;', PFabricante = '&quot;+p.getFabricante()+&quot;', POutros = '&quot;+p.getOutros()+&quot;', PCategoria= '&quot;+p.getCategoria()+&quot;', PFabri = '&quot;+p.getDataFab()+&quot;',&quot;</span>
-<span class="fc" id="L119">                    + &quot;PValidade = '&quot;+p.getDataVal()+&quot;', PUnVenda = '&quot;+p.getUnCompra()+&quot;',PEstoque = '&quot;+p.getEstoqueInicial()+&quot;',&quot;</span>
-<span class="fc" id="L120">                    + &quot;PCusto = '&quot;+p.getCusto()+&quot;', PTributos = '&quot;+p.getTributos()+&quot;',PObservacoes = '&quot;+p.getObservacoes()+&quot;'   where PCod= '&quot;+p.getCodigo()+&quot;';&quot;); </span>
+<span class="fc" id="L120">            state.executeUpdate(&quot;update PRODUTOS set PNome = '&quot;+p.getNome()+&quot;', PDescricao = '&quot;+p.getDescricao()+&quot;', PDescReduzida = '&quot;+p.getDescricaoReduzida()+&quot;',&quot;</span>
+<span class="fc" id="L121">                    + &quot;PLocalEstoque = '&quot;+p.getLocalEstoque()+&quot;', PCBarras= '&quot;+p.getCodBarras()+&quot;', PFabricante = '&quot;+p.getFabricante()+&quot;', POutros = '&quot;+p.getOutros()+&quot;', PCategoria= '&quot;+p.getCategoria()+&quot;', PFabri = '&quot;+p.getDataFab()+&quot;',&quot;</span>
+<span class="fc" id="L122">                    + &quot;PValidade = '&quot;+p.getDataVal()+&quot;', PUnVenda = '&quot;+p.getUnCompra()+&quot;',PEstoque = '&quot;+p.getEstoqueInicial()+&quot;',&quot;</span>
+<span class="fc" id="L123">                    + &quot;PCusto = '&quot;+p.getCusto()+&quot;', PTributos = '&quot;+p.getTributos()+&quot;',PObservacoes = '&quot;+p.getObservacoes()+&quot;'   where PCod= '&quot;+p.getCodigo()+&quot;';&quot;); </span>
     
-<span class="fc" id="L122">        desconBD();</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L125">        desconBD();</span>
+<span class="fc" id="L126">    }</span>
     
     /*Insere os dados no BD*/
     /*Nessa classe, é feita uma verificação dos campos utilizando a classe validaEntrada.
     Se houver problema, as exceções são lançadas.*/
     
     public void insereDados(FornecedorDAO f) throws SQLException, entradaInvalidaException{
-<span class="fc" id="L130">        conectarBD();</span>
-<span class="fc" id="L131">        state = conexao.createStatement();</span>
+<span class="fc" id="L133">        conectarBD();</span>
+<span class="fc" id="L134">        state = conexao.createStatement();</span>
         
-<span class="fc" id="L133">        state.executeUpdate(&quot;insert into FORNECEDOR (CNPJ,InscEst,FNome,FRazao,FRua,FBairro,FCep,FEndNum,FCidade,FEstado,FTel1,FTel2)&quot;</span>
-<span class="fc" id="L134">                    + &quot;values ('&quot;+f.getCnpj()+&quot;','&quot;+f.getInscEstadual()+&quot;','&quot;+f.getNome()+&quot;','&quot;+f.getRazao()+&quot;','&quot;+f.getRua()+&quot;','&quot;+f.getBairro()+&quot;','&quot;+f.getCep()+&quot;',&quot;</span>
-<span class="fc" id="L135">                    + &quot;'&quot;+f.getNum()+&quot;','&quot;+f.getFCidade()+&quot;','&quot;+f.getFEstado()+&quot;','&quot;+f.getTelefone1()+&quot;','&quot;+f.getTelefone2()+&quot;');&quot;);</span>
+<span class="fc" id="L136">        state.executeUpdate(&quot;insert into FORNECEDOR (CNPJ,InscEst,FNome,FRazao,FRua,FBairro,FCep,FEndNum,FCidade,FEstado,FTel1,FTel2)&quot;</span>
+<span class="fc" id="L137">                    + &quot;values ('&quot;+f.getCnpj()+&quot;','&quot;+f.getInscEstadual()+&quot;','&quot;+f.getNome()+&quot;','&quot;+f.getRazao()+&quot;','&quot;+f.getRua()+&quot;','&quot;+f.getBairro()+&quot;','&quot;+f.getCep()+&quot;',&quot;</span>
+<span class="fc" id="L138">                    + &quot;'&quot;+f.getNum()+&quot;','&quot;+f.getFCidade()+&quot;','&quot;+f.getFEstado()+&quot;','&quot;+f.getTelefone1()+&quot;','&quot;+f.getTelefone2()+&quot;');&quot;);</span>
 
-<span class="fc" id="L137">        desconBD();</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L140">        desconBD();</span>
+<span class="fc" id="L141">    }</span>
     
     
     /*VERIFICAR SE FUNCIONA*/
     public void insereDadosCliente(ClienteDAO c) throws SQLException, entradaInvalidaException{
-<span class="fc" id="L143">        conectarBD();</span>
-<span class="fc" id="L144">        state = conexao.createStatement();</span>
+<span class="fc" id="L146">        conectarBD();</span>
+<span class="fc" id="L147">        state = conexao.createStatement();</span>
         
-<span class="fc" id="L146">        state.executeUpdate(&quot;insert into CLIENTE (CCNPJ,CInscEst,CNome,CRazao,CRua,CBairro,CCep,CEndNum,CCidade,CEstado,CTel1,CTel2)&quot;</span>
-<span class="fc" id="L147">                    + &quot;values ('&quot;+c.getCnpj()+&quot;','&quot;+c.getInscEstadual()+&quot;','&quot;+c.getNome()+&quot;','&quot;+c.getRazao()+&quot;','&quot;+c.getRua()+&quot;','&quot;+c.getBairro()+&quot;','&quot;+c.getCep()+&quot;',&quot;</span>
-<span class="fc" id="L148">                    + &quot;'&quot;+c.getNum()+&quot;','&quot;+c.getCCidade()+&quot;','&quot;+c.getCEstado()+&quot;','&quot;+c.getTelefone1()+&quot;','&quot;+c.getTelefone2()+&quot;');&quot;);</span>
+<span class="fc" id="L149">        state.executeUpdate(&quot;insert into CLIENTE (CCNPJ,CInscEst,CNome,CRazao,CRua,CBairro,CCep,CEndNum,CCidade,CEstado,CTel1,CTel2)&quot;</span>
+<span class="fc" id="L150">                    + &quot;values ('&quot;+c.getCnpj()+&quot;','&quot;+c.getInscEstadual()+&quot;','&quot;+c.getNome()+&quot;','&quot;+c.getRazao()+&quot;','&quot;+c.getRua()+&quot;','&quot;+c.getBairro()+&quot;','&quot;+c.getCep()+&quot;',&quot;</span>
+<span class="fc" id="L151">                    + &quot;'&quot;+c.getNum()+&quot;','&quot;+c.getCCidade()+&quot;','&quot;+c.getCEstado()+&quot;','&quot;+c.getTelefone1()+&quot;','&quot;+c.getTelefone2()+&quot;');&quot;);</span>
 
-<span class="fc" id="L150">        desconBD();</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L153">        desconBD();</span>
+<span class="fc" id="L154">    }</span>
     
     public void inserirDadosProduto(ProdutoDAO p)throws SQLException{
-<span class="fc" id="L154">        conectarBD();</span>
-<span class="fc" id="L155">        state = conexao.createStatement();</span>
+<span class="fc" id="L157">        conectarBD();</span>
+<span class="fc" id="L158">        state = conexao.createStatement();</span>
 
-<span class="fc" id="L157">        state.executeUpdate(&quot;insert into PRODUTOS (PCod, PNome, PDescricao, PDescReduzida, PLocalEstoque, PCBarras, PFabricante,POutros, PCategoria, PFabri, PValidade, PUnVenda, PEstoque, PCusto, PTributos, PObservacoes)&quot;</span>
-<span class="fc" id="L158">                    + &quot;values ('&quot;+p.getCodigo()+&quot;','&quot;+p.getNome()+&quot;','&quot;+p.getDescricao()+&quot;','&quot;+p.getDescricaoReduzida()+&quot;','&quot;+p.getLocalEstoque()+&quot;',&quot;</span>
-<span class="fc" id="L159">                    + &quot;'&quot;+p.getCodBarras()+&quot;','&quot;+p.getFabricante()+&quot;',&quot;</span>
-<span class="fc" id="L160">                    + &quot;'&quot;+p.getOutros()+&quot;','&quot;+p.getCategoria()+&quot;','&quot;+p.getDataFab()+&quot;','&quot;+p.getDataVal()+&quot;','&quot;+p.getUnCompra()+&quot;','&quot;+p.getEstoqueInicial()+&quot;','&quot;+p.getCusto()+&quot;','&quot;+p.getTributos()+&quot;','&quot;+p.getObservacoes()+&quot;');&quot;);</span>
+<span class="fc" id="L160">        state.executeUpdate(&quot;insert into PRODUTOS (PCod, PNome, PDescricao, PDescReduzida, PLocalEstoque, PCBarras, PFabricante,POutros, PCategoria, PFabri, PValidade, PUnVenda, PEstoque, PCusto, PTributos, PObservacoes)&quot;</span>
+<span class="fc" id="L161">                    + &quot;values ('&quot;+p.getCodigo()+&quot;','&quot;+p.getNome()+&quot;','&quot;+p.getDescricao()+&quot;','&quot;+p.getDescricaoReduzida()+&quot;','&quot;+p.getLocalEstoque()+&quot;',&quot;</span>
+<span class="fc" id="L162">                    + &quot;'&quot;+p.getCodBarras()+&quot;','&quot;+p.getFabricante()+&quot;',&quot;</span>
+<span class="fc" id="L163">                    + &quot;'&quot;+p.getOutros()+&quot;','&quot;+p.getCategoria()+&quot;','&quot;+p.getDataFab()+&quot;','&quot;+p.getDataVal()+&quot;','&quot;+p.getUnCompra()+&quot;','&quot;+p.getEstoqueInicial()+&quot;','&quot;+p.getCusto()+&quot;','&quot;+p.getTributos()+&quot;','&quot;+p.getObservacoes()+&quot;');&quot;);</span>
     
-<span class="fc" id="L162">        desconBD();</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L165">        desconBD();</span>
+<span class="fc" id="L166">    }</span>
   
     /*Realiza um consulta no BD através do CNPJ*/
     public FornecedorDAO consultarFornecedor(String cnpj) throws SQLException{
-<span class="fc" id="L167">        FornecedorDAO f = new FornecedorDAO();</span>
-<span class="fc" id="L168">        conectarBD();</span>
-<span class="fc" id="L169">        Statement state = conexao.createStatement();</span>
-<span class="pc" id="L170">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from FORNECEDOR where cnpj = '&quot;+cnpj+&quot;'&quot;)){</span>
-<span class="fc" id="L171">            ResultSet resSet = p.executeQuery();</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">            if(resSet.next()){</span>
-<span class="fc" id="L173">                f.setCnpj(resSet.getString(&quot;cnpj&quot;));</span>
-<span class="fc" id="L174">                f.setInscEstadual(resSet.getString(&quot;inscEst&quot;));</span>
-<span class="fc" id="L175">                f.setNome(resSet.getString(&quot;Fnome&quot;));</span>
-<span class="fc" id="L176">                f.setRazao(resSet.getString(&quot;FRazao&quot;));</span>
-<span class="fc" id="L177">                f.setTelefone1(resSet.getString(&quot;FTel1&quot;));</span>
-<span class="fc" id="L178">                f.setTelefone2(resSet.getString(&quot;FTel2&quot;));</span>
-<span class="fc" id="L179">                f.setBairro(resSet.getString(&quot;FBairro&quot;));</span>
-<span class="fc" id="L180">                f.setRua(resSet.getString(&quot;FRua&quot;));</span>
-<span class="fc" id="L181">                f.setNum(resSet.getString(&quot;FEndNum&quot;));</span>
-<span class="fc" id="L182">                f.setCep(resSet.getString(&quot;FCep&quot;));</span>
-<span class="fc" id="L183">                f.setFCidade(resSet.getString(&quot;FCidade&quot;));</span>
-<span class="fc" id="L184">                f.setFEstado(resSet.getString(&quot;FEstado&quot;));</span>
+<span class="fc" id="L170">        FornecedorDAO f = new FornecedorDAO();</span>
+<span class="fc" id="L171">        conectarBD();</span>
+<span class="fc" id="L172">        Statement state = conexao.createStatement();</span>
+<span class="pc" id="L173">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from FORNECEDOR where cnpj = '&quot;+cnpj+&quot;'&quot;)){</span>
+<span class="fc" id="L174">            ResultSet resSet = p.executeQuery();</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">            if(resSet.next()){</span>
+<span class="fc" id="L176">                f.setCnpj(resSet.getString(&quot;cnpj&quot;));</span>
+<span class="fc" id="L177">                f.setInscEstadual(resSet.getString(&quot;inscEst&quot;));</span>
+<span class="fc" id="L178">                f.setNome(resSet.getString(&quot;Fnome&quot;));</span>
+<span class="fc" id="L179">                f.setRazao(resSet.getString(&quot;FRazao&quot;));</span>
+<span class="fc" id="L180">                f.setTelefone1(resSet.getString(&quot;FTel1&quot;));</span>
+<span class="fc" id="L181">                f.setTelefone2(resSet.getString(&quot;FTel2&quot;));</span>
+<span class="fc" id="L182">                f.setBairro(resSet.getString(&quot;FBairro&quot;));</span>
+<span class="fc" id="L183">                f.setRua(resSet.getString(&quot;FRua&quot;));</span>
+<span class="fc" id="L184">                f.setNum(resSet.getString(&quot;FEndNum&quot;));</span>
+<span class="fc" id="L185">                f.setCep(resSet.getString(&quot;FCep&quot;));</span>
+<span class="fc" id="L186">                f.setFCidade(resSet.getString(&quot;FCidade&quot;));</span>
+<span class="fc" id="L187">                f.setFEstado(resSet.getString(&quot;FEstado&quot;));</span>
             }
-<span class="pc bpc" id="L186" title="6 of 8 branches missed.">        }</span>
+<span class="pc bpc" id="L189" title="6 of 8 branches missed.">        }</span>
         
-<span class="fc" id="L188">       desconBD();          </span>
-<span class="fc" id="L189">       return f;</span>
+<span class="fc" id="L191">       desconBD();          </span>
+<span class="fc" id="L192">       return f;</span>
     }
 
     public ClienteDAO consultarCliente(String cnpj) throws SQLException{
-<span class="fc" id="L193">        ClienteDAO c = new ClienteDAO();</span>
-<span class="fc" id="L194">        conectarBD();</span>
-<span class="fc" id="L195">        Statement state = conexao.createStatement();</span>
-<span class="pc" id="L196">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from CLIENTE where CCNPJ = '&quot;+cnpj+&quot;'&quot;)){</span>
-<span class="fc" id="L197">            ResultSet resSet = p.executeQuery();</span>
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            if(resSet.next()){</span>
-<span class="fc" id="L199">                c.setCnpj(resSet.getString(&quot;CCNPJ&quot;));</span>
-<span class="fc" id="L200">                c.setInscEstadual(resSet.getString(&quot;CinscEst&quot;));</span>
-<span class="fc" id="L201">                c.setNome(resSet.getString(&quot;Cnome&quot;));</span>
-<span class="fc" id="L202">                c.setRazao(resSet.getString(&quot;CRazao&quot;));</span>
-<span class="fc" id="L203">                c.setTelefone1(resSet.getString(&quot;CTel1&quot;));</span>
-<span class="fc" id="L204">                c.setTelefone2(resSet.getString(&quot;CTel2&quot;));</span>
-<span class="fc" id="L205">                c.setBairro(resSet.getString(&quot;CBairro&quot;));</span>
-<span class="fc" id="L206">                c.setRua(resSet.getString(&quot;CRua&quot;));</span>
-<span class="fc" id="L207">                c.setNum(resSet.getString(&quot;CEndNum&quot;));</span>
-<span class="fc" id="L208">                c.setCep(resSet.getString(&quot;CCep&quot;));</span>
-<span class="fc" id="L209">                c.setCCidade(resSet.getString(&quot;CCidade&quot;));</span>
-<span class="fc" id="L210">                c.setCEstado(resSet.getString(&quot;CEstado&quot;));</span>
+<span class="fc" id="L196">        ClienteDAO c = new ClienteDAO();</span>
+<span class="fc" id="L197">        conectarBD();</span>
+<span class="fc" id="L198">        Statement state = conexao.createStatement();</span>
+<span class="pc" id="L199">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from CLIENTE where CCNPJ = '&quot;+cnpj+&quot;'&quot;)){</span>
+<span class="fc" id="L200">            ResultSet resSet = p.executeQuery();</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">            if(resSet.next()){</span>
+<span class="fc" id="L202">                c.setCnpj(resSet.getString(&quot;CCNPJ&quot;));</span>
+<span class="fc" id="L203">                c.setInscEstadual(resSet.getString(&quot;CinscEst&quot;));</span>
+<span class="fc" id="L204">                c.setNome(resSet.getString(&quot;Cnome&quot;));</span>
+<span class="fc" id="L205">                c.setRazao(resSet.getString(&quot;CRazao&quot;));</span>
+<span class="fc" id="L206">                c.setTelefone1(resSet.getString(&quot;CTel1&quot;));</span>
+<span class="fc" id="L207">                c.setTelefone2(resSet.getString(&quot;CTel2&quot;));</span>
+<span class="fc" id="L208">                c.setBairro(resSet.getString(&quot;CBairro&quot;));</span>
+<span class="fc" id="L209">                c.setRua(resSet.getString(&quot;CRua&quot;));</span>
+<span class="fc" id="L210">                c.setNum(resSet.getString(&quot;CEndNum&quot;));</span>
+<span class="fc" id="L211">                c.setCep(resSet.getString(&quot;CCep&quot;));</span>
+<span class="fc" id="L212">                c.setCCidade(resSet.getString(&quot;CCidade&quot;));</span>
+<span class="fc" id="L213">                c.setCEstado(resSet.getString(&quot;CEstado&quot;));</span>
             }
-<span class="pc bpc" id="L212" title="6 of 8 branches missed.">        }</span>
+<span class="pc bpc" id="L215" title="6 of 8 branches missed.">        }</span>
         
-<span class="fc" id="L214">       desconBD();          </span>
-<span class="fc" id="L215">       return c;</span>
+<span class="fc" id="L217">       desconBD();          </span>
+<span class="fc" id="L218">       return c;</span>
     }
     
     public List&lt;ProdutoDAO&gt; consultaTodosProdutos() throws SQLException{
         
-<span class="nc" id="L220">        List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L221">        conectarBD();</span>
+<span class="fc" id="L223">        List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L224">        conectarBD();</span>
         
-<span class="nc" id="L223">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS&quot;)) {</span>
-<span class="nc" id="L224">            ResultSet rs = pstm.executeQuery();</span>
+<span class="pc" id="L226">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS&quot;)) {</span>
+<span class="fc" id="L227">            ResultSet rs = pstm.executeQuery();</span>
            
-<span class="nc bnc" id="L226" title="All 2 branches missed.">            while(rs.next()){              </span>
-<span class="nc" id="L227">                ProdutoDAO p = new ProdutoDAO();</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">            while(rs.next()){              </span>
+<span class="fc" id="L230">                ProdutoDAO p = new ProdutoDAO();</span>
                 
-<span class="nc" id="L229">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
-<span class="nc" id="L230">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
-<span class="nc" id="L231">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
-<span class="nc" id="L232">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
-<span class="nc" id="L233">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
-<span class="nc" id="L234">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
+<span class="fc" id="L232">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
+<span class="fc" id="L233">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="fc" id="L234">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
+<span class="fc" id="L235">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
+<span class="fc" id="L236">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
+<span class="fc" id="L237">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
                 
-<span class="nc" id="L236">            clis.add(p);</span>
-<span class="nc" id="L237">            }   </span>
-<span class="nc bnc" id="L238" title="All 8 branches missed.">        }</span>
+<span class="fc" id="L239">            clis.add(p);</span>
+<span class="fc" id="L240">            }   </span>
+<span class="pc bpc" id="L241" title="6 of 8 branches missed.">        }</span>
         
-<span class="nc" id="L240">       desconBD();</span>
+<span class="fc" id="L243">       desconBD();</span>
         
-<span class="nc" id="L242">       return clis;    </span>
+<span class="fc" id="L245">       return clis;    </span>
     }
     
     
     public List&lt;ProdutoDAO&gt; consultaTodosProdutosPorNome(String nome) throws SQLException{
         
-<span class="nc" id="L248">    List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L249">        conectarBD();</span>
+<span class="fc" id="L251">    List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L252">        conectarBD();</span>
         
-<span class="nc" id="L251">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PNome like '%&quot;+nome+&quot;%'&quot;)) {</span>
-<span class="nc" id="L252">            ResultSet rs = pstm.executeQuery();</span>
+<span class="pc" id="L254">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PNome like '%&quot;+nome+&quot;%'&quot;)) {</span>
+<span class="fc" id="L255">            ResultSet rs = pstm.executeQuery();</span>
            
-<span class="nc bnc" id="L254" title="All 2 branches missed.">            while(rs.next()){              </span>
-<span class="nc" id="L255">                ProdutoDAO p = new ProdutoDAO();</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">            while(rs.next()){              </span>
+<span class="fc" id="L258">                ProdutoDAO p = new ProdutoDAO();</span>
                 
-<span class="nc" id="L257">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
-<span class="nc" id="L258">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
-<span class="nc" id="L259">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
-<span class="nc" id="L260">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
-<span class="nc" id="L261">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
-<span class="nc" id="L262">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
+<span class="fc" id="L260">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
+<span class="fc" id="L261">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="fc" id="L262">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
+<span class="fc" id="L263">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
+<span class="fc" id="L264">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
+<span class="fc" id="L265">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
                 
-<span class="nc" id="L264">            clis.add(p);</span>
-<span class="nc" id="L265">            }   </span>
-<span class="nc bnc" id="L266" title="All 8 branches missed.">        }</span>
+<span class="fc" id="L267">            clis.add(p);</span>
+<span class="fc" id="L268">            }   </span>
+<span class="pc bpc" id="L269" title="6 of 8 branches missed.">        }</span>
         
-<span class="nc" id="L268">       desconBD();</span>
+<span class="fc" id="L271">       desconBD();</span>
         
-<span class="nc" id="L270">       return clis; </span>
+<span class="fc" id="L273">       return clis; </span>
         
     }
     
     public List&lt;ProdutoDAO&gt; consultaTodosProdutosPorCodigo(String codigo) throws SQLException{
         
-<span class="nc" id="L276">    List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L277">        conectarBD();</span>
+<span class="fc" id="L279">    List&lt;ProdutoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L280">        conectarBD();</span>
         
-<span class="nc" id="L279">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PCod = &quot;+codigo+&quot;&quot;)) {</span>
-<span class="nc" id="L280">            ResultSet rs = pstm.executeQuery();</span>
+<span class="pc" id="L282">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PCod = &quot;+codigo+&quot;&quot;)) {</span>
+<span class="fc" id="L283">            ResultSet rs = pstm.executeQuery();</span>
            
-<span class="nc bnc" id="L282" title="All 2 branches missed.">            while(rs.next()){              </span>
-<span class="nc" id="L283">                ProdutoDAO p = new ProdutoDAO();</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            while(rs.next()){              </span>
+<span class="fc" id="L286">                ProdutoDAO p = new ProdutoDAO();</span>
                 
-<span class="nc" id="L285">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
-<span class="nc" id="L286">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
-<span class="nc" id="L287">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
-<span class="nc" id="L288">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
-<span class="nc" id="L289">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
-<span class="nc" id="L290">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
+<span class="fc" id="L288">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
+<span class="fc" id="L289">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="fc" id="L290">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
+<span class="fc" id="L291">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
+<span class="fc" id="L292">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
+<span class="fc" id="L293">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
                 
-<span class="nc" id="L292">            clis.add(p);</span>
-<span class="nc" id="L293">            }   </span>
-<span class="nc bnc" id="L294" title="All 8 branches missed.">        }</span>
+<span class="fc" id="L295">            clis.add(p);</span>
+<span class="fc" id="L296">            }   </span>
+<span class="pc bpc" id="L297" title="6 of 8 branches missed.">        }</span>
         
-<span class="nc" id="L296">       desconBD();</span>
+<span class="fc" id="L299">       desconBD();</span>
         
-<span class="nc" id="L298">       return clis; </span>
+<span class="fc" id="L301">       return clis; </span>
         
     }
     
     public ProdutoDAO consultaTodosProdutosPorCodigo2(String codigo) throws SQLException{
-<span class="fc" id="L303">        ProdutoDAO p = new ProdutoDAO();</span>
-<span class="fc" id="L304">        conectarBD();</span>
+<span class="fc" id="L306">        ProdutoDAO p = new ProdutoDAO();</span>
+<span class="fc" id="L307">        conectarBD();</span>
         
-<span class="pc" id="L306">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PCod = &quot;+codigo+&quot;&quot;)) {</span>
-<span class="fc" id="L307">            ResultSet rs = pstm.executeQuery();</span>
+<span class="pc" id="L309">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select PCod, PNome, PDescReduzida, PFabricante, PCusto, PTributos from PRODUTOS where PCod = &quot;+codigo+&quot;&quot;)) {</span>
+<span class="fc" id="L310">            ResultSet rs = pstm.executeQuery();</span>
            
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">            while(rs.next()){              </span>
-<span class="nc" id="L310">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
-<span class="nc" id="L311">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
-<span class="nc" id="L312">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
-<span class="nc" id="L313">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
-<span class="nc" id="L314">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
-<span class="nc" id="L315">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">            while(rs.next()){              </span>
+<span class="fc" id="L313">                p.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
+<span class="fc" id="L314">                p.setNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="fc" id="L315">                p.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
+<span class="fc" id="L316">                p.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
+<span class="fc" id="L317">                p.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
+<span class="fc" id="L318">                p.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
             }   
-<span class="pc bpc" id="L317" title="6 of 8 branches missed.">        }</span>
+<span class="pc bpc" id="L320" title="6 of 8 branches missed.">        }</span>
         
-<span class="fc" id="L319">       desconBD();</span>
+<span class="fc" id="L322">       desconBD();</span>
         
-<span class="fc" id="L321">       return p; </span>
+<span class="fc" id="L324">       return p; </span>
         
     }
     
     
     public boolean excluirProduto(String codigo) throws SQLException{
-<span class="fc" id="L327">        conectarBD();</span>
-<span class="fc" id="L328">        state = conexao.createStatement();</span>
-<span class="fc" id="L329">        state.executeUpdate(&quot;delete from PRODUTOS where PCod = '&quot;+codigo+&quot;'&quot;);</span>
-<span class="fc" id="L330">        desconBD(); </span>
-<span class="fc" id="L331">        return true;</span>
+<span class="fc" id="L330">        conectarBD();</span>
+<span class="fc" id="L331">        state = conexao.createStatement();</span>
+<span class="fc" id="L332">        state.executeUpdate(&quot;delete from PRODUTOS where PCod = '&quot;+codigo+&quot;'&quot;);</span>
+<span class="fc" id="L333">        desconBD(); </span>
+<span class="fc" id="L334">        return true;</span>
     }
     
+    
+    
     public ProdutoDAO consultarProduto(String codigo) throws SQLException{
-<span class="nc" id="L335">        ProdutoDAO f = new ProdutoDAO();</span>
-<span class="nc" id="L336">        conectarBD();</span>
-<span class="nc" id="L337">        Statement state = conexao.createStatement();</span>
-<span class="nc" id="L338">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from PRODUTOS where PCod = '&quot;+codigo+&quot;'&quot;)){</span>
-<span class="nc" id="L339">            ResultSet rs = p.executeQuery();</span>
-<span class="nc bnc" id="L340" title="All 2 branches missed.">            if(rs.next()){</span>
-<span class="nc" id="L341">                f.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
-<span class="nc" id="L342">                f.setCodBarras(rs.getString(&quot;PCBarras&quot;));</span>
-<span class="nc" id="L343">                f.setNome(rs.getString(&quot;PNome&quot;));</span>
-<span class="nc" id="L344">                f.setDescricao(rs.getString(&quot;PDescricao&quot;));</span>
-<span class="nc" id="L345">                f.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
-<span class="nc" id="L346">                f.setLocalEstoque(rs.getString(&quot;PLocalEstoque&quot;));</span>
-<span class="nc" id="L347">                f.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
-<span class="nc" id="L348">                f.setOutros(rs.getString(&quot;POutros&quot;));</span>
-<span class="nc" id="L349">                f.setCategoria(rs.getString(&quot;PCategoria&quot;));</span>
-<span class="nc" id="L350">                f.setDataFab(rs.getString(&quot;PFabri&quot;));</span>
-<span class="nc" id="L351">                f.setDataVal(rs.getString(&quot;PValidade&quot;));</span>
-<span class="nc" id="L352">                f.setUnCompra(rs.getString(&quot;PUnVenda&quot;));</span>
-<span class="nc" id="L353">                f.setEstoqueInicial(rs.getInt(&quot;PEstoque&quot;));</span>
-<span class="nc" id="L354">                f.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
-<span class="nc" id="L355">                f.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
-<span class="nc" id="L356">                f.setObservacoes(rs.getString(&quot;PObservacoes&quot;));</span>
+<span class="fc" id="L340">        ProdutoDAO f = new ProdutoDAO();</span>
+<span class="fc" id="L341">        conectarBD();</span>
+<span class="fc" id="L342">        Statement state = conexao.createStatement();</span>
+<span class="pc" id="L343">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from PRODUTOS where PCod = '&quot;+codigo+&quot;'&quot;)){</span>
+<span class="fc" id="L344">            ResultSet rs = p.executeQuery();</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L346">                f.setCodigo(rs.getInt(&quot;PCod&quot;));</span>
+<span class="fc" id="L347">                f.setCodBarras(rs.getString(&quot;PCBarras&quot;));</span>
+<span class="fc" id="L348">                f.setNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="fc" id="L349">                f.setDescricao(rs.getString(&quot;PDescricao&quot;));</span>
+<span class="fc" id="L350">                f.setDescricaoReduzida(rs.getString(&quot;PDescReduzida&quot;));</span>
+<span class="fc" id="L351">                f.setLocalEstoque(rs.getString(&quot;PLocalEstoque&quot;));</span>
+<span class="fc" id="L352">                f.setFabricante(rs.getString(&quot;PFabricante&quot;));</span>
+<span class="fc" id="L353">                f.setOutros(rs.getString(&quot;POutros&quot;));</span>
+<span class="fc" id="L354">                f.setCategoria(rs.getString(&quot;PCategoria&quot;));</span>
+<span class="fc" id="L355">                f.setDataFab(rs.getString(&quot;PFabri&quot;));</span>
+<span class="fc" id="L356">                f.setDataVal(rs.getString(&quot;PValidade&quot;));</span>
+<span class="fc" id="L357">                f.setUnCompra(rs.getString(&quot;PUnVenda&quot;));</span>
+<span class="fc" id="L358">                f.setEstoqueInicial(rs.getInt(&quot;PEstoque&quot;));</span>
+<span class="fc" id="L359">                f.setCusto(rs.getFloat(&quot;PCusto&quot;));</span>
+<span class="fc" id="L360">                f.setTributos(rs.getFloat(&quot;PTributos&quot;));</span>
+<span class="fc" id="L361">                f.setObservacoes(rs.getString(&quot;PObservacoes&quot;));</span>
             }
-<span class="nc bnc" id="L358" title="All 8 branches missed.">        }</span>
+<span class="pc bpc" id="L363" title="6 of 8 branches missed.">        }</span>
+      
+<span class="fc" id="L365">       desconBD();          </span>
+<span class="fc" id="L366">       return f;</span>
+    }
+    
+    
+    //inserido pelo DINIZ
+    public List&lt;HistoricoDAO&gt; consultaTodosHistoricos() throws SQLException{
         
-<span class="nc" id="L360">       desconBD();          </span>
-<span class="nc" id="L361">       return f;</span>
+<span class="nc" id="L373">        List&lt;HistoricoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L374">        conectarBD();</span>
+        
+<span class="nc" id="L376">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A &quot;</span>
+                + &quot;join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P &quot;
+                + &quot;on B.PCod=P.PCod order by B.HCod&quot;)) {
+<span class="nc" id="L379">            ResultSet rs = pstm.executeQuery();</span>
+           
+<span class="nc bnc" id="L381" title="All 2 branches missed.">            while(rs.next()){              </span>
+<span class="nc" id="L382">                HistoricoDAO f = new HistoricoDAO();</span>
+                
+<span class="nc" id="L384">                f.setHcodigo(rs.getInt(&quot;HCod&quot;));</span>
+<span class="nc" id="L385">                f.setData(rs.getString(&quot;Hdt&quot;));</span>
+<span class="nc" id="L386">                f.setPCod(rs.getInt(&quot;PCod&quot;));</span>
+<span class="nc" id="L387">                f.setPNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="nc" id="L388">                f.setQuantidade(rs.getInt(&quot;Quantidade&quot;));</span>
+<span class="nc" id="L389">                f.setFNome(rs.getString(&quot;Fnome&quot;));</span>
+                
+<span class="nc" id="L391">            clis.add(f);</span>
+<span class="nc" id="L392">            }   </span>
+<span class="nc bnc" id="L393" title="All 8 branches missed.">        }</span>
+        
+<span class="nc" id="L395">       desconBD();</span>
+        
+<span class="nc" id="L397">       return clis;    </span>
+    }
+    //inserido pelo DINIZ
+    public List&lt;HistoricoDAO&gt; consultarHistoricosCODIGO(String codigo) throws SQLException{
+        
+<span class="nc" id="L402">        List&lt;HistoricoDAO&gt; clis = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L403">        conectarBD();</span>
+        
+<span class="nc" id="L405">        try (PreparedStatement pstm = conexao.prepareStatement(&quot;select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A &quot;</span>
+                + &quot;join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P &quot;
+                + &quot;on B.PCod=P.PCod where B.HCod=&quot;+codigo+&quot; order by B.HCod&quot;)) {
+<span class="nc" id="L408">            ResultSet rs = pstm.executeQuery();</span>
+           
+<span class="nc bnc" id="L410" title="All 2 branches missed.">            while(rs.next()){              </span>
+<span class="nc" id="L411">                HistoricoDAO f = new HistoricoDAO();</span>
+                
+<span class="nc" id="L413">                f.setHcodigo(rs.getInt(&quot;HCod&quot;));</span>
+<span class="nc" id="L414">                f.setData(rs.getString(&quot;Hdt&quot;));</span>
+<span class="nc" id="L415">                f.setPCod(rs.getInt(&quot;PCod&quot;));</span>
+<span class="nc" id="L416">                f.setPNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="nc" id="L417">                f.setQuantidade(rs.getInt(&quot;Quantidade&quot;));</span>
+<span class="nc" id="L418">                f.setFNome(rs.getString(&quot;Fnome&quot;));</span>
+                
+<span class="nc" id="L420">            clis.add(f);</span>
+<span class="nc" id="L421">            }   </span>
+<span class="nc bnc" id="L422" title="All 8 branches missed.">        }</span>
+        
+<span class="nc" id="L424">       desconBD();</span>
+        
+<span class="nc" id="L426">       return clis;    </span>
+    }
+    //inserido pelo DINIZ
+    public void inserirDadosHistorico(HistoricoDAO h)throws SQLException{
+<span class="nc" id="L430">        conectarBD();</span>
+<span class="nc" id="L431">        state = conexao.createStatement();</span>
+
+<span class="nc" id="L433">        state.executeUpdate(&quot;insert into HISTORICO_COMPRA (HCod, Hdt)&quot;</span>
+<span class="nc" id="L434">                  + &quot;values ('&quot;+h.getHcodigo()+&quot;','&quot;+h.getData()+&quot;');&quot;);</span>
+<span class="nc" id="L435">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
+<span class="nc" id="L436">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
+
+<span class="nc" id="L438">        desconBD();</span>
+<span class="nc" id="L439">    }</span>
+    //inserido pelo DINIZ
+    public void inserirDadosHistorico2(HistoricoDAO h)throws SQLException{
+<span class="nc" id="L442">        conectarBD();</span>
+<span class="nc" id="L443">        state = conexao.createStatement();</span>
+
+<span class="nc" id="L445">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
+<span class="nc" id="L446">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
+
+<span class="nc" id="L448">        desconBD();</span>
+<span class="nc" id="L449">    }</span>
+    //inserido pelo DINIZ
+    public HistoricoDAO consultarHistorico(int HCodigo) throws SQLException{
+<span class="nc" id="L452">        HistoricoDAO f = new HistoricoDAO();</span>
+<span class="nc" id="L453">        conectarBD();</span>
+<span class="nc" id="L454">        Statement state = conexao.createStatement();</span>
+<span class="nc" id="L455">        try(PreparedStatement p = conexao.prepareStatement(&quot;select A.HCod,A.Hdt ,B.PCod,P.PNome, B.Quantidade, F.FNome from HISTORICO_COMPRA A &quot;</span>
+                + &quot;join PRODUTO_HISTORICO B on  B.HCod=A.HCod join FORNECEDOR F on B.CNPJ=F.CNPJ JOIN PRODUTOS P &quot;
+                + &quot;on B.PCod=P.PCod where A.HCod= '&quot;+HCodigo+&quot;' order by B.HCod;&quot;)){
+<span class="nc" id="L458">            ResultSet rs = p.executeQuery();</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if(rs.next()){</span>
+<span class="nc" id="L460">                f.setHcodigo(rs.getInt(&quot;HCod&quot;));</span>
+<span class="nc" id="L461">                f.setData(rs.getString(&quot;Hdt&quot;));</span>
+<span class="nc" id="L462">                f.setPCod(rs.getInt(&quot;PCod&quot;));</span>
+<span class="nc" id="L463">                f.setPNome(rs.getString(&quot;PNome&quot;));</span>
+<span class="nc" id="L464">                f.setQuantidade(rs.getInt(&quot;Quantidade&quot;));</span>
+<span class="nc" id="L465">                f.setFNome(rs.getString(&quot;Fnome&quot;));</span>
+                 
+            }
+<span class="nc bnc" id="L468" title="All 8 branches missed.">        }</span>
+      
+<span class="nc" id="L470">       desconBD();          </span>
+<span class="nc" id="L471">       return f;</span>
+    }
+    //inserido pelo DINIZ
+    public boolean excluirHistorico(String codigo) throws SQLException{
+<span class="nc" id="L475">            conectarBD();</span>
+<span class="nc" id="L476">            state = conexao.createStatement();</span>
+<span class="nc" id="L477">            state.executeUpdate(&quot;delete from PRODUTO_HISTORICO where HCod = '&quot;+codigo+&quot;'&quot;);</span>
+<span class="nc" id="L478">            state.executeUpdate(&quot;delete from HISTORICO_COMPRA where HCod = '&quot;+codigo+&quot;'&quot;);</span>
+<span class="nc" id="L479">            desconBD(); </span>
+<span class="nc" id="L480">            return true;</span>
+        }  
+    
+    public void insereDadosPedido(PedidoDAO p) throws SQLException, entradaInvalidaException{
+<span class="fc" id="L484">        conectarBD();</span>
+<span class="fc" id="L485">        state = conexao.createStatement();</span>
+        
+<span class="fc" id="L487">        state.executeUpdate(&quot;insert into PEDIDO (PedValor, PedDataEntrega, PedPago)&quot;</span>
+<span class="fc" id="L488">                    + &quot;values ('&quot;+p.getValor()+&quot;','&quot;+p.getDataEntrega()+&quot;','&quot;+p.getPago()+&quot;');&quot;);</span>
+
+<span class="fc" id="L490">        desconBD();</span>
+<span class="fc" id="L491">    }</span>
+    
+    public void insereDadosItemPedido(ItemPedidoDAO i) throws SQLException, entradaInvalidaException{
+<span class="nc" id="L494">        conectarBD();</span>
+        
+<span class="nc" id="L496">        state = conexao.createStatement();</span>
+        
+<span class="nc" id="L498">        state.executeUpdate(&quot;insert into ITEMPEDIDO (ItemQuantidade, PCod, PedCod) values ('&quot;+i.getQuantidade()+&quot;','&quot;+i.getProCod()+&quot;','&quot;+i.getPedCod()+&quot;');&quot;);</span>
+                
+<span class="nc" id="L500">        desconBD();</span>
+<span class="nc" id="L501">    }</span>
+    
+     public void atualizarPedido(PedidoDAO p) throws SQLException, entradaInvalidaException{
+<span class="fc" id="L504">        conectarBD();</span>
+<span class="fc" id="L505">        state = conexao.createStatement();</span>
+ 
+<span class="fc" id="L507">            state.executeUpdate(&quot;update PEDIDO set PedValor= '&quot;+p.getValor()+&quot;', PedDataEntrega= '&quot;+p.getDataEntrega()+&quot;', PedPago = '&quot;+p.getPago()+&quot;' where PedCod = '&quot;+p.getCodigo()+&quot;';&quot;); </span>
+    
+<span class="fc" id="L509">        desconBD();</span>
+<span class="fc" id="L510">    }</span>
+     
+    /*Realiza um consulta no BD através do codigo*/
+    public List&lt;PedidoDAO&gt; consultarPedido(String codigo) throws SQLException{
+<span class="fc" id="L514">        ArrayList&lt;PedidoDAO&gt; pedList = new ArrayList&lt;PedidoDAO&gt;();</span>
+        
+<span class="fc" id="L516">        conectarBD();</span>
+<span class="fc" id="L517">        Statement state = conexao.createStatement();</span>
+<span class="pc" id="L518">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from PEDIDO where PedCod= &quot;+codigo+&quot;&quot;)){</span>
+<span class="fc" id="L519">            ResultSet resSet = p.executeQuery();</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">            if(resSet.next()){</span>
+<span class="fc" id="L521">                PedidoDAO ped = new PedidoDAO();</span>
+<span class="fc" id="L522">                ped.setCodigo(resSet.getInt(&quot;PedCod&quot;));</span>
+<span class="fc" id="L523">                ped.setValor(resSet.getFloat(&quot;PedValor&quot;));</span>
+<span class="fc" id="L524">                ped.setDataEntrega(resSet.getString(&quot;PedDataEntrega&quot;));</span>
+<span class="fc" id="L525">                ped.setPago(resSet.getBoolean(&quot;PedPago&quot;));           </span>
+                
+<span class="fc" id="L527">                pedList.add(ped);</span>
+            }
+<span class="pc bpc" id="L529" title="6 of 8 branches missed.">        }</span>
+        
+<span class="fc" id="L531">       desconBD();          </span>
+<span class="fc" id="L532">       return pedList;</span>
+    }
+    
+     /*Realiza um consulta no BD através do codigo*/
+    public List&lt;PedidoDAO&gt; consultarTodosPedidos(String codigo) throws SQLException{
+<span class="nc" id="L537">        List&lt;PedidoDAO&gt; ped = new ArrayList&lt;PedidoDAO&gt;();</span>
+        
+<span class="nc" id="L539">        conectarBD();</span>
+<span class="nc" id="L540">        Statement state = conexao.createStatement();</span>
+<span class="nc" id="L541">        try(PreparedStatement p = conexao.prepareStatement(&quot;select * from PEDIDO&quot;)){</span>
+<span class="nc" id="L542">            ResultSet resSet = p.executeQuery();</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">            while(resSet.next()){</span>
+<span class="nc" id="L544">                PedidoDAO  pedido = new PedidoDAO();</span>
+<span class="nc" id="L545">                pedido.setCodigo(resSet.getInt(&quot;PedCod&quot;));</span>
+<span class="nc" id="L546">                pedido.setValor(resSet.getFloat(&quot;PedValor&quot;));</span>
+<span class="nc" id="L547">                pedido.setDataEntrega(resSet.getString(&quot;PedDataEntrega&quot;));</span>
+<span class="nc" id="L548">                pedido.setPago(resSet.getBoolean(&quot;PedPago&quot;)); </span>
+                
+<span class="nc" id="L550">                ped.add(pedido);</span>
+<span class="nc" id="L551">            }</span>
+<span class="nc bnc" id="L552" title="All 8 branches missed.">        }</span>
+        
+<span class="nc" id="L554">       desconBD();          </span>
+<span class="nc" id="L555">       return ped;</span>
+    }
+    
+    public boolean excluirPedido(String codigo) throws SQLException{
+<span class="nc" id="L559">        conectarBD();</span>
+<span class="nc" id="L560">        state = conexao.createStatement();</span>
+<span class="nc" id="L561">        state.executeUpdate(&quot;delete from PEDIDO where PedCod= '&quot;+codigo+&quot;'&quot;);</span>
+<span class="nc" id="L562">        desconBD();</span>
+<span class="nc" id="L563">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

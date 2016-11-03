@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ItemPedidoDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;DistDeBebidas_Software&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">my.contacteditor</a> &gt; <span class="el_source">ItemPedidoDAO.java</span></div><h1>ItemPedidoDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package my.contacteditor;
+
+import java.sql.SQLException;
+import my.contacteditor.conexao.conexaoBD;
+
+/**
+ *
+ * @author  Lucas Tassi
+ *          Lucas Diniz
+ *          Lucas Barbosa
+ *          Jhordan Garcia
+ */
+public class ItemPedidoDAO {
+    private int pedCod;
+    private int proCod;
+    private int quantidade;
+    
+<span class="nc" id="L23">    public ItemPedidoDAO(int pedCod, int proCod, int quantidade) {</span>
+<span class="nc" id="L24">        this.pedCod = pedCod;</span>
+<span class="nc" id="L25">        this.proCod = proCod;</span>
+<span class="nc" id="L26">        this.quantidade = quantidade;</span>
+<span class="nc" id="L27">    }</span>
+    
+    public int getPedCod() {
+<span class="nc" id="L30">        return pedCod;</span>
+    }
+
+    public void setPedCod(int pedCod) {
+<span class="nc" id="L34">        this.pedCod = pedCod;</span>
+<span class="nc" id="L35">    }</span>
+
+    public int getProCod() {
+<span class="nc" id="L38">        return proCod;</span>
+    }
+
+    public void setProCod(int proCod) {
+<span class="nc" id="L42">        this.proCod = proCod;</span>
+<span class="nc" id="L43">    }</span>
+
+    public int getQuantidade() {
+<span class="nc" id="L46">        return quantidade;</span>
+    }
+
+    public void setQuantidade(int quantidade) {
+<span class="nc" id="L50">        this.quantidade = quantidade;</span>
+<span class="nc" id="L51">    }</span>
+    
+    /*Utilizado nos testes (retorna true/false para realizar as comparações)*/
+    public boolean insereItemPedido() throws entradaInvalidaException, SQLException{
+<span class="nc" id="L55">        validaEntrada ve = new validaEntrada();</span>
+<span class="nc" id="L56">        conexaoBD conexao = new conexaoBD();</span>
+         
+        try{
+<span class="nc" id="L59">            ve.valida_entrada_itemPedido(quantidade);</span>
+<span class="nc" id="L60">            conexao.insereDadosItemPedido(this);</span>
+<span class="nc" id="L61">            return true;</span>
+        }
+<span class="nc" id="L63">        catch(Exception ex){</span>
+<span class="nc" id="L64">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+        }
+    }
+    
+    /*Utilizado nos testes (retorna true/false para realizar as comparações)*//*
+    public boolean atualizaItemPedido() throws entradaInvalidaException {
+        validaEntrada ve = new validaEntrada();
+        conexaoBD conexao = new conexaoBD();
+        
+        try{
+            ve.valida_entrada_itemPedido(quantidade);
+            conexao.atualizaDadosItemPedido(this);
+            return true;
+        }
+        catch(Exception ex){
+            throw new entradaInvalidaException(&quot;&quot;+ex);
+        }
+       
+    }*/
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

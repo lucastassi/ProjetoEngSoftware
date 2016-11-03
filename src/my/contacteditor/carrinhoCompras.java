@@ -533,7 +533,23 @@ public class carrinhoCompras extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaConsultaMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        float valor = precoFinal;
+        String dataEntrega = "2016-05-05";
+        boolean pago = true;
+
+            /*Verifica se há campos obr. vazios. Se não tiver, faz a inserção no BD.*/
+        PedidoDAO pedido = new PedidoDAO(valor,dataEntrega,pago);
+
+
+                try{
+                    pedido.inserePedido();
+                    JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+                    //dispose();               
+                }catch(entradaInvalidaException ex){
+                    JOptionPane.showMessageDialog(null,""+ex.toString().substring(85,ex.toString().length()),"Erro",JOptionPane.ERROR_MESSAGE,null);
+                }catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,""+ex,"Erro",JOptionPane.ERROR_MESSAGE,null);
+            }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
