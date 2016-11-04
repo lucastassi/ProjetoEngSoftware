@@ -533,27 +533,43 @@ public class carrinhoCompras extends javax.swing.JFrame {
 <span class="nc" id="L533">    }//GEN-LAST:event_tabelaConsultaMouseClicked</span>
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-<span class="nc" id="L537">    }//GEN-LAST:event_jButton1ActionPerformed</span>
+<span class="nc" id="L536">        float valor = precoFinal;</span>
+<span class="nc" id="L537">        String dataEntrega = &quot;2016-05-05&quot;;</span>
+<span class="nc" id="L538">        boolean pago = true;</span>
+
+            /*Verifica se há campos obr. vazios. Se não tiver, faz a inserção no BD.*/
+<span class="nc" id="L541">        PedidoDAO pedido = new PedidoDAO(valor,dataEntrega,pago);</span>
+
+
+                try{
+<span class="nc" id="L545">                    pedido.inserePedido();</span>
+<span class="nc" id="L546">                    JOptionPane.showMessageDialog(null, &quot;Cadastrado com sucesso!&quot;);</span>
+                    //dispose();               
+<span class="nc" id="L548">                }catch(entradaInvalidaException ex){</span>
+<span class="nc" id="L549">                    JOptionPane.showMessageDialog(null,&quot;&quot;+ex.toString().substring(85,ex.toString().length()),&quot;Erro&quot;,JOptionPane.ERROR_MESSAGE,null);</span>
+<span class="nc" id="L550">                }catch (SQLException ex) {</span>
+<span class="nc" id="L551">                    JOptionPane.showMessageDialog(null,&quot;&quot;+ex,&quot;Erro&quot;,JOptionPane.ERROR_MESSAGE,null);</span>
+<span class="nc" id="L552">            }</span>
+<span class="nc" id="L553">    }//GEN-LAST:event_jButton1ActionPerformed</span>
 
     /**
      * @param args the command line arguments
      */
 public static void main(String args[]) {
-<span class="nc" id="L543">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
+<span class="nc" id="L559">        java.awt.EventQueue.invokeLater(new Runnable() {</span>
             public void run() {
            try{   
-<span class="nc" id="L546">               javax.swing.UIManager um = new javax.swing.UIManager();</span>
-<span class="nc" id="L547">               um.setLookAndFeel(um.getSystemLookAndFeelClassName());</span>
-<span class="nc" id="L548">           }catch(Exception e){</span>
-<span class="nc" id="L549">               e.printStackTrace();</span>
+<span class="nc" id="L562">               javax.swing.UIManager um = new javax.swing.UIManager();</span>
+<span class="nc" id="L563">               um.setLookAndFeel(um.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L564">           }catch(Exception e){</span>
+<span class="nc" id="L565">               e.printStackTrace();</span>
            }
            finally {
-<span class="nc" id="L552">                new carrinhoCompras().setVisible(true); //troque o nemo do frame!</span>
-<span class="nc" id="L553">            }</span>
-<span class="nc" id="L554">            }</span>
+<span class="nc" id="L568">                new carrinhoCompras().setVisible(true); //troque o nemo do frame!</span>
+<span class="nc" id="L569">            }</span>
+<span class="nc" id="L570">            }</span>
         });
-<span class="nc" id="L556">    }</span>
+<span class="nc" id="L572">    }</span>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox&lt;String&gt; comboOpcao;

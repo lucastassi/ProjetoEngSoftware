@@ -22,14 +22,14 @@ public class HistoricoDAO {
     private String PNome;
     private String FNome;
     
-<span class="nc" id="L25">    public HistoricoDAO(int codigocompra, String datacompra, int quantidade, int PCod, String CNPJFornecedor) {</span>
+<span class="fc" id="L25">    public HistoricoDAO(int codigocompra, String datacompra, int quantidade, int PCod, String CNPJFornecedor) {</span>
         
-<span class="nc" id="L27">        this.hcodigo = codigocompra;</span>
-<span class="nc" id="L28">        this.Data = datacompra;</span>
-<span class="nc" id="L29">        this.Quantidade = quantidade;</span>
-<span class="nc" id="L30">        this.PCod = PCod;</span>
-<span class="nc" id="L31">        this.FCod = CNPJFornecedor;</span>
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L27">        this.hcodigo = codigocompra;</span>
+<span class="fc" id="L28">        this.Data = datacompra;</span>
+<span class="fc" id="L29">        this.Quantidade = quantidade;</span>
+<span class="fc" id="L30">        this.PCod = PCod;</span>
+<span class="fc" id="L31">        this.FCod = CNPJFornecedor;</span>
+<span class="fc" id="L32">    }</span>
 
 <span class="nc" id="L34">    public HistoricoDAO() {</span>
     
@@ -41,7 +41,7 @@ public class HistoricoDAO {
      * @return the hcodigo
      */
     public int getHcodigo() {
-<span class="nc" id="L44">        return hcodigo;</span>
+<span class="fc" id="L44">        return hcodigo;</span>
     }
 
     /**
@@ -55,7 +55,7 @@ public class HistoricoDAO {
      * @return the Data
      */
     public String getData() {
-<span class="nc" id="L58">        return Data;</span>
+<span class="fc" id="L58">        return Data;</span>
     }
 
     /**
@@ -69,7 +69,7 @@ public class HistoricoDAO {
      * @return the Quantidade
      */
     public int getQuantidade() {
-<span class="nc" id="L72">        return Quantidade;</span>
+<span class="fc" id="L72">        return Quantidade;</span>
     }
 
     /**
@@ -83,7 +83,7 @@ public class HistoricoDAO {
      * @return the PCod
      */
     public int getPCod() {
-<span class="nc" id="L86">        return PCod;</span>
+<span class="fc" id="L86">        return PCod;</span>
     }
 
     /**
@@ -94,30 +94,30 @@ public class HistoricoDAO {
 <span class="nc" id="L94">    }</span>
 
     public boolean insereHistorico() throws entradaInvalidaException, SQLException{
-<span class="nc" id="L97">        validaEntrada va = new validaEntrada();</span>
-<span class="nc" id="L98">        conexaoBD conexao = new conexaoBD();</span>
+<span class="fc" id="L97">        validaEntrada va = new validaEntrada();</span>
+<span class="fc" id="L98">        conexaoBD conexao = new conexaoBD();</span>
          
         try{
-<span class="nc" id="L101">            va.valida_entrada_historico(hcodigo, Data, Quantidade, PCod, FCod);</span>
-<span class="nc" id="L102">            conexao.inserirDadosHistorico(this);</span>
-<span class="nc" id="L103">            return true;</span>
+<span class="fc" id="L101">            va.valida_entrada_historico(hcodigo, Data, Quantidade, PCod, FCod);</span>
+<span class="fc" id="L102">            conexao.inserirDadosHistorico(this);</span>
+<span class="fc" id="L103">            return true;</span>
         }
-<span class="nc" id="L105">        catch(Exception ex){</span>
-<span class="nc" id="L106">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+<span class="fc" id="L105">        catch(Exception ex){</span>
+<span class="fc" id="L106">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
         }
     }
     
     public boolean insereHistorico2() throws entradaInvalidaException, SQLException{
-<span class="nc" id="L111">        validaEntrada va = new validaEntrada();</span>
-<span class="nc" id="L112">        conexaoBD conexao = new conexaoBD();</span>
+<span class="fc" id="L111">        validaEntrada va = new validaEntrada();</span>
+<span class="fc" id="L112">        conexaoBD conexao = new conexaoBD();</span>
          
         try{
-<span class="nc" id="L115">            va.valida_entrada_historico(hcodigo, Data, Quantidade, PCod, FCod);</span>
+<span class="fc" id="L115">            va.valida_entrada_historico(hcodigo, Data, Quantidade, PCod, FCod);</span>
 <span class="nc" id="L116">            conexao.inserirDadosHistorico2(this);</span>
 <span class="nc" id="L117">            return true;</span>
         }
-<span class="nc" id="L119">        catch(Exception ex){</span>
-<span class="nc" id="L120">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
+<span class="fc" id="L119">        catch(Exception ex){</span>
+<span class="fc" id="L120">            throw new entradaInvalidaException(&quot;&quot;+ex);</span>
         }
     }
 
@@ -125,7 +125,7 @@ public class HistoricoDAO {
      * @return the FCod
      */
     public String getFCod() {
-<span class="nc" id="L128">        return FCod;</span>
+<span class="fc" id="L128">        return FCod;</span>
     }
 
     /**

@@ -3,10 +3,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import my.contacteditor.ClienteDAO;
 import my.contacteditor.FornecedorDAO;
+import my.contacteditor.HistoricoDAO;
 import my.contacteditor.PedidoDAO;
 import my.contacteditor.ProdutoDAO;
 import my.contacteditor.conexao.conexaoBD;
@@ -1484,4 +1486,93 @@ public class PigLatinTest {
        
 
     }
+    
+        /*----------------------------------------------------------------------------------------------------------------
+                                                     TESTE PARA HISTORICO
+   ---------------------------------------------------------------------------------------------------------------- */
+    
+
+    
+    @Test
+    public void testeInsercaoHistoricoOk() throws SQLException, Exception{
+     
+        int codigo = 123456;
+        String data = ("22/22/2222");
+        int quantidade = 30;
+        int codigo2 = 777;  
+        String cnpj=("00.000.000/0000-00");
+
+        HistoricoDAO p = new HistoricoDAO(codigo, data, quantidade, codigo2, cnpj);
+
+        assertTrue(p.insereHistorico());
+     }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
+     
+     @Test
+     public void testeInsercaoHistorico2Ok() throws SQLException, Exception{
+     
+        int hcod = 100;
+        String data = ("22/22/2222");
+        int quantidade = 30;
+        int pcod = 777;  
+        String cnpj=("11.111.111/1111-11");
+
+        HistoricoDAO p = new HistoricoDAO(hcod, data, quantidade, pcod, cnpj);
+
+        assertTrue(p.insereHistorico2());
+     }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
+    
+     @Test
+     public void testeInsercaoHistoricoFalha() throws SQLException, Exception{
+     
+        int codigo = 12345;
+        String data = ("222222");
+        int quantidade = 30;
+        int codigo2 = 12345;  
+        String cnpj=("00.000.000/0000-00");
+
+        HistoricoDAO p = new HistoricoDAO(codigo, data, quantidade, codigo2, cnpj);
+               
+        try{
+           assertTrue(p.insereHistorico());
+         }catch(Exception ex){
+             assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Data inválida!"));
+         }
+    }
+     @Test
+     public void testeInsercaoHistorico2Falha() throws SQLException, Exception{
+     
+        int codigo = 12345;
+        String data = ("22222");
+        int quantidade = 30;
+        int codigo2 = 12345;  
+        String cnpj=("00.000.000/0000-00");
+
+        HistoricoDAO p = new HistoricoDAO(codigo, data, quantidade, codigo2, cnpj);
+               
+        try{
+           assertTrue(p.insereHistorico2());
+         }catch(Exception ex){
+             assertTrue(ex.getMessage().equalsIgnoreCase("my.contacteditor.entradaInvalidaException: Data inválida!"));
+         }
+    }
+    
+     
+    @Test
+    public void excluirHistorico() throws SQLException{
+     int codigo =123456;
+       
+     conexaoBD conexao = new conexaoBD();
+     assertEquals(true, conexao.excluirHistorico(Integer.toString(codigo)));
+    }//Teste para verificar se a deleção funciona
+    
+    @Test
+    public void excluirHistorico1() throws SQLException{
+     int codigo =100;
+       
+     conexaoBD conexao = new conexaoBD();
+     assertEquals(true, conexao.excluirHistorico(Integer.toString(codigo)));
+    }//Teste para verificar se a deleção funciona
+
+    
+
 }

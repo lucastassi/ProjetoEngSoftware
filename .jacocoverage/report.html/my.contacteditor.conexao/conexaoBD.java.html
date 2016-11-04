@@ -427,23 +427,23 @@ public class conexaoBD {
     }
     //inserido pelo DINIZ
     public void inserirDadosHistorico(HistoricoDAO h)throws SQLException{
-<span class="nc" id="L430">        conectarBD();</span>
-<span class="nc" id="L431">        state = conexao.createStatement();</span>
+<span class="fc" id="L430">        conectarBD();</span>
+<span class="fc" id="L431">        state = conexao.createStatement();</span>
 
-<span class="nc" id="L433">        state.executeUpdate(&quot;insert into HISTORICO_COMPRA (HCod, Hdt)&quot;</span>
-<span class="nc" id="L434">                  + &quot;values ('&quot;+h.getHcodigo()+&quot;','&quot;+h.getData()+&quot;');&quot;);</span>
-<span class="nc" id="L435">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
-<span class="nc" id="L436">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
+<span class="fc" id="L433">        state.executeUpdate(&quot;insert into HISTORICO_COMPRA (HCod, Hdt)&quot;</span>
+<span class="fc" id="L434">                  + &quot;values ('&quot;+h.getHcodigo()+&quot;','&quot;+h.getData()+&quot;');&quot;);</span>
+<span class="fc" id="L435">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
+<span class="fc" id="L436">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
 
-<span class="nc" id="L438">        desconBD();</span>
-<span class="nc" id="L439">    }</span>
+<span class="fc" id="L438">        desconBD();</span>
+<span class="fc" id="L439">    }</span>
     //inserido pelo DINIZ
     public void inserirDadosHistorico2(HistoricoDAO h)throws SQLException{
-<span class="nc" id="L442">        conectarBD();</span>
-<span class="nc" id="L443">        state = conexao.createStatement();</span>
+<span class="fc" id="L442">        conectarBD();</span>
+<span class="fc" id="L443">        state = conexao.createStatement();</span>
 
-<span class="nc" id="L445">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
-<span class="nc" id="L446">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
+<span class="pc" id="L445">        state.executeUpdate(&quot;insert into PRODUTO_HISTORICO (PCod, HCod, Quantidade, CNPJ)&quot;</span>
+<span class="fc" id="L446">                  + &quot;values ('&quot;+h.getPCod()+&quot;','&quot;+h.getHcodigo()+&quot;','&quot;+h.getQuantidade()+&quot;','&quot;+h.getFCod()+&quot;');&quot;);</span>
 
 <span class="nc" id="L448">        desconBD();</span>
 <span class="nc" id="L449">    }</span>
@@ -472,12 +472,12 @@ public class conexaoBD {
     }
     //inserido pelo DINIZ
     public boolean excluirHistorico(String codigo) throws SQLException{
-<span class="nc" id="L475">            conectarBD();</span>
-<span class="nc" id="L476">            state = conexao.createStatement();</span>
-<span class="nc" id="L477">            state.executeUpdate(&quot;delete from PRODUTO_HISTORICO where HCod = '&quot;+codigo+&quot;'&quot;);</span>
-<span class="nc" id="L478">            state.executeUpdate(&quot;delete from HISTORICO_COMPRA where HCod = '&quot;+codigo+&quot;'&quot;);</span>
-<span class="nc" id="L479">            desconBD(); </span>
-<span class="nc" id="L480">            return true;</span>
+<span class="fc" id="L475">            conectarBD();</span>
+<span class="fc" id="L476">            state = conexao.createStatement();</span>
+<span class="fc" id="L477">            state.executeUpdate(&quot;delete from PRODUTO_HISTORICO where HCod = '&quot;+codigo+&quot;'&quot;);</span>
+<span class="fc" id="L478">            state.executeUpdate(&quot;delete from HISTORICO_COMPRA where HCod = '&quot;+codigo+&quot;'&quot;);</span>
+<span class="fc" id="L479">            desconBD(); </span>
+<span class="fc" id="L480">            return true;</span>
         }  
     
     public void insereDadosPedido(PedidoDAO p) throws SQLException, entradaInvalidaException{
