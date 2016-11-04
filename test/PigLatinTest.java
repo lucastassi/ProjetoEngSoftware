@@ -1507,6 +1507,7 @@ public class PigLatinTest {
         assertTrue(p.insereHistorico());
      }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
      
+    /*
      @Test
      public void testeInsercaoHistorico2Ok() throws SQLException, Exception{
      
@@ -1520,7 +1521,8 @@ public class PigLatinTest {
 
         assertTrue(p.insereHistorico2());
      }//Testa para ver se está sendo inserido com sucesso. Todos os campos obrigatórios estão preenchidos.
-    
+*/    
+
      @Test
      public void testeInsercaoHistoricoFalha() throws SQLException, Exception{
      
